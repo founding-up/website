@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+  window.FOUNDING_UP_CONFIG = window.FOUNDING_UP_CONFIG || {
+    DEMO_BASE_URL: '../demo-portals',
+  };
+</script>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <title>founding_up — Schedule a Demo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -366,7 +371,7 @@ footer {
       <li><a href="index.html#curriculum">Activities</a></li>
       <li><a href="index.html#how">How It Works</a></li>
       <li><a href="index.html#leadership">Team</a></li>
-      <li><a href="login.html">Demo</a></li>
+      <li><a href="#" onclick="window.location.href=window.FOUNDING_UP_CONFIG.DEMO_BASE_URL+'/login.html';return false;">Demo</a></li>
       <li><a href="demo.html" class="nav-cta">Schedule Demo</a></li>
     </ul>
     <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Toggle menu">
@@ -556,9 +561,9 @@ footer {
       <a href="index.html" class="logo">founding<span>_</span>up</a>
       <div class="footer-links">
         <a href="index.html">Home</a>
-        <a href="portals/student/">Student</a>
-        <a href="portals/university/">University</a>
-        <a href="portals/employer/">Employer</a>
+        <a href="#" onclick="window.location.href=window.FOUNDING_UP_CONFIG.DEMO_BASE_URL+'/portals/student/';return false;">Student</a>
+        <a href="#" onclick="window.location.href=window.FOUNDING_UP_CONFIG.DEMO_BASE_URL+'/portals/university/';return false;">University</a>
+        <a href="#" onclick="window.location.href=window.FOUNDING_UP_CONFIG.DEMO_BASE_URL+'/portals/employer/';return false;">Employer</a>
       </div>
       <p>&copy; 2026 founding_up. All rights reserved.</p>
     </div>

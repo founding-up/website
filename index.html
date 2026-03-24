@@ -3,6 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+  // Cross-repo configuration — demo portals live in a separate repo/deployment
+  // Update DEMO_BASE_URL when the demo-portals repo is deployed
+  window.FOUNDING_UP_CONFIG = {
+    DEMO_BASE_URL: '../demo-portals',  // Local dev: relative path to demo-portals dir
+    // DEMO_BASE_URL: 'https://demo.foundingup.com',  // Production: deployed URL
+  };
+</script>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <title>founding_up — Identity &amp; Workforce Transformation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -605,7 +613,7 @@ footer {
       <li><a href="#curriculum">Activities</a></li>
       <li><a href="#why">How It Works</a></li>
       <li><a href="#leadership">Team</a></li>
-      <li><a href="login.html" style="opacity:0.7;">Demo</a></li>
+      <li><a href="#" onclick="window.location.href=window.FOUNDING_UP_CONFIG.DEMO_BASE_URL+'/login.html';return false;" style="opacity:0.7;">Demo</a></li>
       <li><a href="demo.html" class="nav-cta">Get Started</a></li>
     </ul>
     <button class="hamburger" id="hamburger" aria-label="Toggle menu">
@@ -1302,9 +1310,9 @@ footer {
       </div>
       <div class="footer-col">
         <h4>Platform</h4>
-        <a href="portals/university/">University Portal</a>
-        <a href="portals/student/">Student Portal</a>
-        <a href="portals/employer/">Employer Portal</a>
+        <a href="#" onclick="window.location.href=window.FOUNDING_UP_CONFIG.DEMO_BASE_URL+'/portals/university/';return false;">University Portal</a>
+        <a href="#" onclick="window.location.href=window.FOUNDING_UP_CONFIG.DEMO_BASE_URL+'/portals/student/';return false;">Student Portal</a>
+        <a href="#" onclick="window.location.href=window.FOUNDING_UP_CONFIG.DEMO_BASE_URL+'/portals/employer/';return false;">Employer Portal</a>
       </div>
       <div class="footer-col">
         <h4>Company</h4>
