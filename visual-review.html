@@ -598,19 +598,20 @@ function injectHighlight(edit) {
     // If selector starts with "text:" use text-based matching to find parent card
     if (sel.startsWith('text:')) {
       const searchText = sel.substring(5);
-      const allH4 = doc.querySelectorAll('h4');
-      for (const h4 of allH4) {
-        if (h4.textContent.trim() === searchText) {
-          target = h4.closest('.workshop-card') || h4.closest('.phase-card') || h4.closest('section') || h4.parentElement;
+      // Search ALL heading levels (h1-h6), not just h4
+      const allHeadings = doc.querySelectorAll('h1, h2, h3, h4, h5, h6');
+      for (const heading of allHeadings) {
+        if (heading.textContent.trim() === searchText || heading.textContent.trim().startsWith(searchText)) {
+          target = heading.closest('.workshop-card') || heading.closest('.phase-card') || heading.closest('.why-card') || heading.closest('.cta-section') || heading.closest('section') || heading.parentElement;
           break;
         }
       }
       // Fallback: try original selector if selectorAfter didn't match
       if (!target && edit.selectorAfter && edit.selector.startsWith('text:')) {
         const fallbackText = edit.selector.substring(5);
-        for (const h4 of allH4) {
-          if (h4.textContent.trim() === fallbackText) {
-            target = h4.closest('.workshop-card') || h4.closest('.phase-card') || h4.closest('section') || h4.parentElement;
+        for (const heading of allHeadings) {
+          if (heading.textContent.trim() === fallbackText || heading.textContent.trim().startsWith(fallbackText)) {
+            target = heading.closest('.workshop-card') || heading.closest('.phase-card') || heading.closest('.why-card') || heading.closest('.cta-section') || heading.closest('section') || heading.parentElement;
             break;
           }
         }
