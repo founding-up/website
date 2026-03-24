@@ -1,7 +1,7 @@
 {
   "title": "Danielle Rosenthal \u2014 Framework Edits",
-  "beforeDir": "/site/",
-  "afterDir": "/site-danielle/",
+  "beforeDir": "./",
+  "afterDir": "./reviews/danielle/",
   "baseFile": "index.html",
   "previewPort": 8080,
   "jiraStory": "FUFO-282",
