@@ -470,6 +470,12 @@ function forceAllVisible(iframe) {
         opacity: 1 !important;
         visibility: visible !important;
       }
+      /* Keep nav visible but make it scroll with content, not fixed over the review toolbar */
+      nav {
+        position: relative !important;
+        background: rgba(15, 23, 42, 0.95) !important;
+        backdrop-filter: blur(12px) !important;
+      }
     `;
     doc.head.appendChild(style);
   } catch(e) {}

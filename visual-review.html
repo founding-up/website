@@ -84,12 +84,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="frames">
   <div class="col">
     <div class="col-label cur">Current</div>
-    <iframe id="ifA" src="/site/index.html"></iframe>
+    <iframe id="ifA" src="./index.html"></iframe>
     <div class="divider"></div>
   </div>
   <div class="col">
     <div class="col-label dan">Proposed</div>
-    <iframe id="ifB" src="/site-danielle/index.html"></iframe>
+    <iframe id="ifB" src="./reviews/danielle/index.html"></iframe>
   </div>
 </div>
 
@@ -117,8 +117,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 // === MANIFEST DATA (injected by generate-review.py) ===
 const MANIFEST = {
   "title": "Danielle Rosenthal \u2014 Framework Edits",
-  "beforeDir": "/site/",
-  "afterDir": "/site-danielle/",
+  "beforeDir": "./",
+  "afterDir": "./reviews/danielle/",
   "baseFile": "index.html",
   "previewPort": 8080,
   "jiraStory": "FUFO-282",
@@ -803,6 +803,12 @@ function forceAllVisible(iframe) {
         display: block !important;
         opacity: 1 !important;
         visibility: visible !important;
+      }
+      /* Keep nav visible but make it scroll with content, not fixed over the review toolbar */
+      nav {
+        position: relative !important;
+        background: rgba(15, 23, 42, 0.95) !important;
+        backdrop-filter: blur(12px) !important;
       }
     `;
     doc.head.appendChild(style);
