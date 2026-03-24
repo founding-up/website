@@ -260,7 +260,7 @@
       "category": "framing",
       "file": "index.html",
       "line": 1177,
-      "selector": "text:Evidence-Based Portfolio",
+      "selector": "text:Activities Build Proof",
       "scrollY": 8200,
       "description": "Evidence portfolio \u2014 'scored evidence' \u2192 'evidence of real capabilities'",
       "oldText": "Every workshop, reflection, and project produces scored evidence of real competencies. Not a quiz \u2014 a portfolio of demonstrated capability that grows with each phase.",
@@ -272,7 +272,7 @@
       "category": "evidence",
       "file": "index.html",
       "line": 1189,
-      "selector": "text:External Evidence",
+      "selector": "text:The Market Validates You",
       "scrollY": 8500,
       "description": "Validation model rewrite \u2014 hierarchy \u2192 all-phase availability",
       "oldText": "Employers verify awards. Certifications confirm readiness. Each validation level \u2014 activity complete, instructor verified, employer verified \u2014 raises the stakes and the credibility.",
@@ -284,7 +284,7 @@
       "category": "framing",
       "file": "index.html",
       "line": 1207,
-      "selector": "text:Phase Progression",
+      "selector": "text:Small Steps, Big Identity",
       "selectorAfter": "text:Phase Progression",
       "scrollY": 8800,
       "description": "Phase conclusion \u2014 'evidence the market can see' \u2192 'know your direction'",
@@ -297,36 +297,39 @@
       "category": "cta",
       "file": "index.html",
       "line": 1207,
-      "selector": ".cta-section, section:last-of-type",
+      "selector": "text:Ready to See What You",
       "scrollY": 9500,
       "description": "Phase conclusion + final CTA",
       "oldText": "Explorer to Investigator to Practitioner to Professional. Each phase builds on the last. By the time you graduate, your identity isn't a question \u2014 it's evidence the market can see. Built by Leaders Who've Scaled It Before Our founding team brings decades of experience from Amazon, Cisco, and higher education \u2014 building the systems that power identity-driven workforce transformation. Founding Team DD Dan Dillard CEO &amp; Founder Former CTO and Amazon Global CTO to Cisco \u2014 leading founding_up's vision for identity-driven workforce transformation MW Matt Wagner COO, Founder Driving operational strategy behind founding_up's identity-first approach to workforce development and student outcomes ML Matthew Liddle CTO (AI/ML), Founder Former Sr. Leader at Amazon who built predictive systems scaling to 100M+ users GB Gene Baxter CTO (Platform), Founder Former Amazon leader architecting enterprise-grade platform infrastructure DR Danielle Rosenthal Chief Researcher, Founder PhD candidate (2026) with 15 years of identity profiling research powering the evidence model Advisors Dr. Molly Beth Malcolm Former Executive VP Chancellor, Austin Community College District Dr. Alton Barron Chairman, Post University Dr. Robert C. Robbins Former University President Dr. Richard Box Chairman Emeritus, Texas A&amp;M Board of Regents Ready to Discover Your Identity? Join the identity clarity program that transforms \"What do you want to be?\" from a paralyzing question into an exciting journey of discovery.",
       "newText": "Explorer to Investigator to Practitioner to Professional. Each phase builds on the last. By the time you graduate, you know your direction, you can act on it, and you can articulate why. Built by Leaders Who've Scaled It Before Our founding team brings decades of experience from Amazon, Cisco, and higher education \u2014 building the systems that power identity-driven workforce transformation. Founding Team DD Dan Dillard CEO &amp; Founder Former CTO and Amazon Global CTO to Cisco \u2014 leading founding_up's vision for identity-driven workforce transformation MW Matt Wagner COO, Founder Driving operational strategy behind founding_up's identity-first approach to workforce development and student outcomes ML Matthew Liddle CTO (AI/ML), Founder Former Sr. Leader at Amazon who built predictive systems scaling to 100M+ users GB Gene Baxter CTO (Platform), Founder Former Amazon leader architecting enterprise-grade platform infrastructure DR Danielle Rosenthal Chief Researcher, Founder PhD candidate (2026) with 15 years of identity profiling research powering the evidence model Advisors Dr. Molly Beth Malcolm Former Executive VP Chancellor, Austin Community College District Dr. Alton Barron Chairman, Post University Dr. Robert C. Robbins Former University President Dr. Richard Box Chairman Emeritus, Texas A&amp;M Board of Regents Ready to See What You're Capable Of? Join the identity clarity program that helps students recognize the extraordinary capabilities they already have \u2014 and build a direction from them.",
-      "reasoning": "Final CTA: 'discover' \u2192 'recognize capabilities.' Internal coherence, not external proof."
+      "reasoning": "Final CTA: 'discover' \u2192 'recognize capabilities.' Internal coherence, not external proof.",
+      "selectorAfter": "text:Ready to See What You"
     },
     {
       "id": "edit-23",
       "category": "framing",
       "file": "demo.html",
       "line": 399,
-      "selector": ".demo-card:first-child p",
+      "selector": "text:Student Identity Engine",
       "scrollY": 0,
       "description": "Student Identity Engine (demo.html)",
       "oldText": "See how students discover who they are through the 4-phase identity journey &mdash; from Explorer to Professional &mdash; with real-time skill radar charts and career spectrum matching.",
       "newText": "See how students recognize their own capabilities and build a clear direction through the 4-phase identity journey &mdash; from Explorer to Professional &mdash; with career pathway mapping and evidence portfolios.",
-      "reasoning": "Radar charts are a visualization, not the product. Replace with what matters: pathways and evidence."
+      "reasoning": "Radar charts are a visualization, not the product. Replace with what matters: pathways and evidence.",
+      "_note": "demo.html edit \u2014 requires file switcher or separate review tool"
     },
     {
       "id": "edit-24",
       "category": "cleo",
       "file": "demo.html",
       "line": 423,
-      "selector": ".demo-card:nth-child(2) p",
+      "selector": "text:Meet Cleo",
       "scrollY": 0,
       "description": "Cleo AI description (demo.html)",
       "oldText": "Meet Cleo &mdash; the AI guide that asks identity-building questions at the right moment, nudges students toward affirming actions, and surfaces career matches they didn't know existed.",
       "newText": "Meet Cleo &mdash; the AI guide that helps students reflect on their experiences, notice patterns in what they're drawn to, decide what to try next, and surfaces career matches they didn't know existed. A navigator, not a prescriber.",
-      "reasoning": "Cleo doesn't nudge or prescribe. She helps students reflect, notice, and decide."
+      "reasoning": "Cleo doesn't nudge or prescribe. She helps students reflect, notice, and decide.",
+      "_note": "demo.html edit \u2014 requires file switcher or separate review tool"
     }
   ]
 }
