@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visual Review — {{TITLE}}</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0e1a;color:#c8ccd4;overflow:hidden}
+
+/* Toolbar */
+.toolbar{position:fixed;top:0;left:0;right:0;z-index:1000;background:#111827ee;backdrop-filter:blur(12px);border-bottom:1px solid #1e2433;padding:6px 16px;display:flex;align-items:center;gap:10px;height:42px}
+.toolbar h1{font-size:13px;color:#fff;white-space:nowrap}
+.edit-nav{display:flex;gap:2px;flex:1;flex-wrap:nowrap;overflow-x:auto}
+.pip{width:24px;height:24px;border-radius:4px;border:1px solid #1e2433;background:#0a0e1a;color:#7a8299;font-size:10px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.pip:hover{border-color:#4b5563;color:#fff}
+.pip.active{background:#2563eb;border-color:#2563eb;color:#fff}
+.pip.approved{background:#064e3b;border-color:#065f46;color:#34d399}
+.pip.rejected{background:#450a0a;border-color:#7f1d1d;color:#f87171;opacity:.5}
+
+/* Summary bar */
+.summary{display:flex;gap:12px;align-items:center;margin-left:auto;font-size:11px;white-space:nowrap}
+.summary .s-approved{color:#34d399}.summary .s-rejected{color:#f87171}.summary .s-pending{color:#fbbf24}
+.export-btn{padding:4px 12px;background:#2563eb;border:none;border-radius:4px;color:#fff;font-size:11px;font-weight:600;cursor:pointer}
+.export-btn:hover{background:#1d4ed8}
+
+/* Frames */
+.frames{display:grid;grid-template-columns:1fr 1fr;height:calc(100vh - 42px);margin-top:42px}
+.col{position:relative;overflow:hidden}
+.col iframe{width:100%;height:100%;border:none}
+.col-label{position:absolute;top:6px;left:50%;transform:translateX(-50%);z-index:10;padding:3px 14px;border-radius:16px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;pointer-events:none}
+.col-label.cur{background:#450a0aee;color:#f87171;border:1px solid #7f1d1d}
+.col-label.dan{background:#064e3bee;color:#34d399;border:1px solid #065f46}
+.divider{position:absolute;top:0;bottom:0;right:0;width:2px;background:#2563eb;z-index:5}
+
+/* Annotation card */
+.anno{position:fixed;bottom:12px;right:12px;z-index:999;width:420px;background:#111827;border:1px solid #1e2433;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.6);overflow:hidden;transition:transform .2s}
+.anno-head{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#0d1117;border-bottom:1px solid #1e2433}
+.anno-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff}
+.anno-num.pending-ring{background:#dc2626}
+.anno-num.approved-ring{background:#059669}
+.anno-num.rejected-ring{background:#6b7280}
+.anno-cat{font-size:9px;padding:2px 7px;border-radius:3px;font-weight:600}
+.anno-desc{font-size:12px;color:#c8ccd4;font-weight:500}
+.anno-loc{font-size:10px;color:#4b5563;margin-left:auto}
+
+.anno-body{padding:10px 12px;max-height:280px;overflow-y:auto}
+.anno-section{margin-bottom:8px}
+.anno-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px}
+.anno-label.old{color:#f87171}.anno-label.new{color:#34d399}
+.anno-text{font-size:12px;line-height:1.5;color:#9ca3af;padding:8px 10px;border-radius:6px}
+.anno-text.old{background:#1a0a0a;border:1px solid #2d0a0a}
+.anno-text.new{background:#0a1a0d;border:2px solid #064e3b;box-shadow:0 0 0 2px #dc2626,0 0 8px rgba(220,38,38,.3)}
+.anno-text.new.approved-state{box-shadow:0 0 0 2px #059669,0 0 8px rgba(5,150,105,.3);border-color:#065f46}
+.anno-text.new.rejected-state{box-shadow:none;border-color:#374151;opacity:.5}
+.del{background:#f8717130;color:#f87171;text-decoration:line-through;padding:0 2px;border-radius:2px}
+.ins{background:#34d39930;color:#34d399;padding:0 2px;border-radius:2px}
+.anno-note{font-size:11px;color:#7a8299;padding:6px 12px;border-top:1px solid #1e2433;background:#0d1117;line-height:1.4}
+
+/* Approval buttons */
+.anno-actions{display:flex;border-top:1px solid #1e2433}
+.anno-actions button{flex:1;padding:8px;background:transparent;border:none;font-size:12px;font-weight:600;cursor:pointer;transition:background .15s}
+.btn-approve{color:#34d399;border-right:1px solid #1e2433}
+.btn-approve:hover{background:#064e3b}
+.btn-approve.selected{background:#064e3b}
+.btn-reject{color:#f87171;border-right:1px solid #1e2433}
+.btn-reject:hover{background:#450a0a}
+.btn-reject.selected{background:#450a0a}
+.btn-prev{color:#60a5fa;border-right:1px solid #1e2433}
+.btn-prev:hover{background:#172554}
+.btn-next{color:#60a5fa}
+.btn-next:hover{background:#172554}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <h1>{{TITLE}}</h1>
+  <div class="edit-nav" id="nav"></div>
+  <div class="summary" id="summary"></div>
+  <button class="export-btn" onclick="exportApprovals()">Export Approvals</button>
+</div>
+
+<div class="frames">
+  <div class="col">
+    <div class="col-label cur">Current</div>
+    <iframe id="ifA" src="{{BEFORE_URL}}"></iframe>
+    <div class="divider"></div>
+  </div>
+  <div class="col">
+    <div class="col-label dan">Proposed</div>
+    <iframe id="ifB" src="{{AFTER_URL}}"></iframe>
+  </div>
+</div>
+
+<div class="anno" id="anno">
+  <div class="anno-head">
+    <div class="anno-num" id="aNum">1</div>
+    <div class="anno-cat" id="aCat"></div>
+    <div class="anno-desc" id="aDesc"></div>
+    <div class="anno-loc" id="aLoc"></div>
+  </div>
+  <div class="anno-body">
+    <div class="anno-section"><div class="anno-label old">Current</div><div class="anno-text old" id="aOld"></div></div>
+    <div class="anno-section"><div class="anno-label new">Proposed Change</div><div class="anno-text new" id="aNew"></div></div>
+  </div>
+  <div class="anno-note" id="aNote"></div>
+  <div class="anno-actions">
+    <button class="btn-approve" onclick="decide('approved')">&#x2713; Approve</button>
+    <button class="btn-reject" onclick="decide('rejected')">&#x2717; Reject</button>
+    <button class="btn-prev" onclick="go(-1)">&larr; Prev</button>
+    <button class="btn-next" onclick="go(1)">Next &rarr;</button>
+  </div>
+</div>
+
+<script>
+// === MANIFEST DATA (injected by generate-review.py) ===
+const MANIFEST = {{MANIFEST_JSON}};
+
+const edits = MANIFEST.edits;
+const categories = {};
+MANIFEST.categories.forEach(c => { categories[c.id] = c; });
+
+// Session key for localStorage
+const SESSION = 'vr-' + MANIFEST.title.replace(/\s+/g, '-').toLowerCase().substring(0, 30);
+
+// Load saved state
+let state = {};
+try { state = JSON.parse(localStorage.getItem(SESSION) || '{}'); } catch(e) {}
+
+// Build nav pips
+const nav = document.getElementById('nav');
+edits.forEach(e => {
+  const b = document.createElement('button');
+  b.className = 'pip';
+  b.textContent = e.id.replace('edit-', '');
+  b.title = `${e.description}`;
+  const cat = categories[e.category];
+  if (cat) b.style.borderLeft = `3px solid ${cat.color}`;
+  b.onclick = () => show(e.id);
+  b.id = `pip-${e.id}`;
+  nav.appendChild(b);
+});
+
+function updatePipStates() {
+  edits.forEach(e => {
+    const pip = document.getElementById(`pip-${e.id}`);
+    if (!pip) return;
+    pip.classList.remove('approved', 'rejected', 'active');
+    const s = state[e.id] || 'pending';
+    if (s === 'approved') pip.classList.add('approved');
+    if (s === 'rejected') pip.classList.add('rejected');
+  });
+  if (currentId) {
+    const activePip = document.getElementById(`pip-${currentId}`);
+    if (activePip) activePip.classList.add('active');
+  }
+  updateSummary();
+}
+
+function updateSummary() {
+  const approved = edits.filter(e => state[e.id] === 'approved').length;
+  const rejected = edits.filter(e => state[e.id] === 'rejected').length;
+  const pending = edits.length - approved - rejected;
+  document.getElementById('summary').innerHTML =
+    `<span class="s-approved">${approved} approved</span>` +
+    `<span class="s-rejected">${rejected} rejected</span>` +
+    `<span class="s-pending">${pending} pending</span>`;
+}
+
+let currentId = null;
+function show(id) {
+  currentId = id;
+  const e = edits.find(x => x.id === id);
+  if (!e) return;
+  const cat = categories[e.category] || {};
+  const s = state[id] || 'pending';
+
+  // Update annotation card
+  const numEl = document.getElementById('aNum');
+  numEl.textContent = id.replace('edit-', '');
+  numEl.className = 'anno-num ' + s + '-ring';
+
+  const catEl = document.getElementById('aCat');
+  catEl.textContent = cat.label || e.category;
+  catEl.style.background = (cat.color || '#333') + '30';
+  catEl.style.color = cat.color || '#999';
+
+  document.getElementById('aDesc').textContent = e.description;
+  document.getElementById('aLoc').textContent = `${e.file}:${e.line}`;
+  document.getElementById('aOld').innerHTML = e.oldText;
+  const newEl = document.getElementById('aNew');
+  newEl.innerHTML = e.newText;
+  newEl.className = 'anno-text new' + (s !== 'pending' ? ` ${s}-state` : '');
+  document.getElementById('aNote').innerHTML = '\ud83d\udcdd ' + (e.reasoning || '');
+
+  // Update approve/reject button highlighting
+  document.querySelector('.btn-approve').classList.toggle('selected', s === 'approved');
+  document.querySelector('.btn-reject').classList.toggle('selected', s === 'rejected');
+
+  // Inject highlight first
+  injectHighlight(e);
+
+  // Scroll: inject a scroll script into the after iframe to scrollIntoView
+  syncing = true;
+  try {
+    const winB = document.getElementById('ifB').contentWindow;
+    const docB = document.getElementById('ifB').contentDocument;
+    const highlighted = docB.querySelector('.vr-highlighted');
+    if (highlighted || e.scrollY > 0) {
+      // Disable smooth scroll (it blocks programmatic scrollTop from parent)
+      const htmlB = docB.documentElement;
+      const htmlA = document.getElementById('ifA').contentDocument.documentElement;
+      htmlB.style.scrollBehavior = 'auto';
+      htmlA.style.scrollBehavior = 'auto';
+
+      // Use the manifest's scrollY — elements may be zero-height until scrolled into view
+      const targetY = e.scrollY || 0;
+      htmlB.scrollTop = targetY;
+      htmlA.scrollTop = targetY;
+
+      // Re-enable smooth scroll and re-inject highlight after layout settles
+      requestAnimationFrame(() => {
+        htmlB.style.scrollBehavior = '';
+        htmlA.style.scrollBehavior = '';
+        // Re-inject highlight now that the element should be laid out
+        setTimeout(() => { injectHighlight(e); }, 200);
+      });
+
+      setTimeout(() => { syncing = false; }, 400);
+    } else if (e.scrollY > 0) {
+      try { document.getElementById('ifA').contentWindow.scrollTo({top: e.scrollY, behavior:'smooth'}); } catch(x) {}
+      try { winB.scrollTo({top: e.scrollY, behavior:'smooth'}); } catch(x) {}
+      setTimeout(() => { syncing = false; }, 600);
+    } else {
+      syncing = false;
+    }
+  } catch(x) { syncing = false; }
+
+  updatePipStates();
+}
+
+function injectHighlight(edit) {
+  try {
+    const doc = document.getElementById('ifB').contentDocument;
+    if (!doc) return;
+
+    // Remove previous highlights — restore original styles
+    doc.querySelectorAll('.vr-highlighted').forEach(el => {
+      el.style.outline = el.dataset.vrOrigOutline || '';
+      el.style.outlineOffset = el.dataset.vrOrigOffset || '';
+      el.style.boxShadow = el.dataset.vrOrigShadow || '';
+      el.style.position = el.dataset.vrOrigPosition || '';
+      el.classList.remove('vr-highlighted');
+    });
+    doc.querySelectorAll('.vr-badge').forEach(el => el.remove());
+
+    if (!edit.selector) return;
+    let target = null;
+
+    // Use selectorAfter if available (for when Danielle changed the h4 title)
+    const sel = edit.selectorAfter || edit.selector;
+
+    // If selector starts with "text:" use text-based matching to find parent card
+    if (sel.startsWith('text:')) {
+      const searchText = sel.substring(5);
+      const allH4 = doc.querySelectorAll('h4');
+      for (const h4 of allH4) {
+        if (h4.textContent.trim() === searchText) {
+          target = h4.closest('.workshop-card') || h4.closest('.phase-card') || h4.closest('section') || h4.parentElement;
+          break;
+        }
+      }
+      // Fallback: try original selector if selectorAfter didn't match
+      if (!target && edit.selectorAfter && edit.selector.startsWith('text:')) {
+        const fallbackText = edit.selector.substring(5);
+        for (const h4 of allH4) {
+          if (h4.textContent.trim() === fallbackText) {
+            target = h4.closest('.workshop-card') || h4.closest('.phase-card') || h4.closest('section') || h4.parentElement;
+            break;
+          }
+        }
+      }
+    } else {
+      target = doc.querySelector(sel);
+    }
+    if (!target) return;
+
+    // Save original styles
+    const cs = doc.defaultView.getComputedStyle(target);
+    target.dataset.vrOrigOutline = target.style.outline;
+    target.dataset.vrOrigOffset = target.style.outlineOffset;
+    target.dataset.vrOrigShadow = target.style.boxShadow;
+    target.dataset.vrOrigPosition = target.style.position;
+
+    // Apply highlight directly to the element — no offset calculation needed
+    target.classList.add('vr-highlighted');
+    target.style.outline = '3px solid #dc2626';
+    target.style.outlineOffset = '4px';
+    target.style.boxShadow = '0 0 0 8px rgba(220,38,38,0.15), 0 0 30px rgba(220,38,38,0.25)';
+    if (cs.position === 'static') target.style.position = 'relative';
+
+    // Badge — positioned relative to the target element
+    const badge = doc.createElement('div');
+    badge.className = 'vr-badge';
+    badge.style.cssText = `
+      position:absolute;top:-14px;left:-14px;
+      width:24px;height:24px;border-radius:50%;
+      background:#dc2626;color:#fff;
+      font-size:11px;font-weight:700;font-family:system-ui;
+      display:flex;align-items:center;justify-content:center;
+      z-index:100000;box-shadow:0 2px 8px rgba(0,0,0,0.3);
+    `;
+    badge.textContent = edit.id.replace('edit-', '');
+    target.appendChild(badge);
+
+    // Inject styles if not already — including override to force all elements visible
+    if (!doc.getElementById('vr-styles')) {
+      const style = doc.createElement('style');
+      style.id = 'vr-styles';
+      style.textContent = `
+        /* Force all animated/hidden elements visible for review */
+        .workshop-card, .phase-card, .why-card, .journey-step,
+        section, .how-card, .team-card, .cta-section {
+          opacity: 1 !important;
+          transform: none !important;
+          transition: none !important;
+          max-height: none !important;
+          visibility: visible !important;
+        }
+        .vr-highlighted {
+          animation: vrpulse 2s infinite;
+        }
+        @keyframes vrpulse {
+          0%,100% { box-shadow:0 0 0 8px rgba(220,38,38,0.15),0 0 30px rgba(220,38,38,0.25); }
+          50% { box-shadow:0 0 0 12px rgba(220,38,38,0.08),0 0 40px rgba(220,38,38,0.35); }
+        }
+      `;
+      doc.head.appendChild(style);
+    }
+  } catch(e) {
+    // Cross-origin or timing issue — silently ignore
+  }
+}
+
+function decide(decision) {
+  if (!currentId) return;
+  state[currentId] = decision;
+  localStorage.setItem(SESSION, JSON.stringify(state));
+  updatePipStates();
+  show(currentId); // Refresh card to show new state
+  // Auto-advance to next pending
+  setTimeout(() => {
+    const nextPending = edits.find(e => !state[e.id] || state[e.id] === 'pending');
+    if (nextPending && nextPending.id !== currentId) {
+      // Don't auto-advance, let human click Next
+    }
+  }, 300);
+}
+
+function go(dir) {
+  const idx = edits.findIndex(e => e.id === currentId);
+  let next = idx + dir;
+  if (next < 0) next = edits.length - 1;
+  if (next >= edits.length) next = 0;
+  show(edits[next].id);
+}
+
+function exportApprovals() {
+  const decisions = edits.map(e => ({
+    id: e.id,
+    category: e.category,
+    file: e.file,
+    line: e.line,
+    description: e.description,
+    decision: state[e.id] || 'pending'
+  }));
+
+  const output = {
+    title: MANIFEST.title,
+    jiraStory: MANIFEST.jiraStory || '',
+    exportedAt: new Date().toISOString(),
+    summary: {
+      total: edits.length,
+      approved: decisions.filter(d => d.decision === 'approved').length,
+      rejected: decisions.filter(d => d.decision === 'rejected').length,
+      pending: decisions.filter(d => d.decision === 'pending').length
+    },
+    decisions: decisions,
+    categories: MANIFEST.categories.map(c => ({
+      ...c,
+      approvedEdits: decisions.filter(d => d.category === c.id && d.decision === 'approved').map(d => d.id),
+      rejectedEdits: decisions.filter(d => d.category === c.id && d.decision === 'rejected').map(d => d.id)
+    }))
+  };
+
+  // Download as JSON
+  const blob = new Blob([JSON.stringify(output, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'approval-decisions.json';
+  a.click();
+  URL.revokeObjectURL(url);
+
+  // Also copy to clipboard
+  navigator.clipboard.writeText(JSON.stringify(output, null, 2)).catch(() => {});
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') go(1);
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') go(-1);
+  if (e.key === 'a' || e.key === 'A') decide('approved');
+  if (e.key === 'r' || e.key === 'R') decide('rejected');
+});
+
+// Sync scrolling between iframes
+let syncing = false;
+function setupSyncScroll() {
+  const ifA = document.getElementById('ifA');
+  const ifB = document.getElementById('ifB');
+  try {
+    const docA = ifA.contentDocument || ifA.contentWindow.document;
+    const docB = ifB.contentDocument || ifB.contentWindow.document;
+    const winA = ifA.contentWindow;
+    const winB = ifB.contentWindow;
+
+    winA.addEventListener('scroll', () => {
+      if (syncing) return;
+      syncing = true;
+      docB.documentElement.style.scrollBehavior = 'auto';
+      docB.documentElement.scrollTop = docA.documentElement.scrollTop;
+      requestAnimationFrame(() => { docB.documentElement.style.scrollBehavior = ''; syncing = false; });
+    });
+
+    winB.addEventListener('scroll', () => {
+      if (syncing) return;
+      syncing = true;
+      docA.documentElement.style.scrollBehavior = 'auto';
+      docA.documentElement.scrollTop = docB.documentElement.scrollTop;
+      requestAnimationFrame(() => { docA.documentElement.style.scrollBehavior = ''; syncing = false; });
+    });
+  } catch(e) {}
+}
+
+// Init — wait for iframes to load, then sync
+const ifA = document.getElementById('ifA');
+const ifB = document.getElementById('ifB');
+let loaded = 0;
+function forceAllVisible(iframe) {
+  try {
+    const doc = iframe.contentDocument;
+    if (!doc) return;
+    const style = doc.createElement('style');
+    style.id = 'vr-force-visible';
+    style.textContent = `
+      .workshop-card, .phase-card, .why-card, .journey-step,
+      section, .how-card, .team-card, .cta-section {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+        max-height: none !important;
+        visibility: visible !important;
+      }
+      /* Force hidden panels visible for review — these are tab/phase panels with display:none */
+      .grade-panel {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+      }
+    `;
+    doc.head.appendChild(style);
+  } catch(e) {}
+}
+
+function onIframeLoad() {
+  loaded++;
+  forceAllVisible(document.getElementById('ifA'));
+  forceAllVisible(document.getElementById('ifB'));
+  if (loaded >= 2) {
+    setupSyncScroll();
+    if (edits.length) show(edits[0].id);
+  }
+}
+ifA.addEventListener('load', onIframeLoad);
+ifB.addEventListener('load', onIframeLoad);
+// Fallback in case load already fired
+setTimeout(() => { if (loaded < 2) { loaded = 2; setupSyncScroll(); if (edits.length) show(edits[0].id); } }, 2000);
+</script>
+</body>
+</html>

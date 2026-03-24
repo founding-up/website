@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>founding_up — Schedule a Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+/* ========== RESET & TOKENS ========== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --blue: #1A6B6B;
+  --blue-light: #237878;
+  --teal: #1A6B6B;
+  --teal-light: #2A9D8F;
+  --cyan: #00E5C8;
+  --cyan-light: #33ECCF;
+  --coral: #FF6F61;
+  --purple: #6A4C93;
+  --white: #FFFFFF;
+  --cream: #F5FAFA;
+  --gray-50: #F5FAFA;
+  --gray-100: #F1F5F9;
+  --gray-200: #E2E8F0;
+  --gray-300: #CBD5E1;
+  --gray-400: #94A3B8;
+  --gray-500: #64748B;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1E293B;
+  --gray-900: #0F172A;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+  --shadow-xl: 0 20px 60px rgba(0,0,0,0.15);
+}
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); color: var(--gray-800); line-height: 1.6; background: var(--white); -webkit-font-smoothing: antialiased; }
+
+/* ========== NAVIGATION ========== */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 14px 0;
+  background: rgba(26,107,107,0.95);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0,229,200,0.15);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+.nav-container {
+  max-width: 1200px; margin: 0 auto; padding: 0 32px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.logo {
+  font-family: var(--font-body); font-weight: 800; font-size: 1.4rem;
+  text-decoration: none; color: #fff; letter-spacing: -0.5px;
+}
+.logo span { color: var(--cyan); }
+.nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
+.nav-links a {
+  text-decoration: none; color: rgba(255,255,255,0.85);
+  font-size: 0.78rem; font-weight: 700; transition: color 0.2s;
+  letter-spacing: 1.5px; text-transform: uppercase;
+}
+.nav-links a:hover { color: var(--cyan); }
+.nav-cta {
+  background: var(--cyan) !important; color: var(--gray-900) !important;
+  padding: 10px 24px; border-radius: 100px; font-weight: 700;
+  font-size: 0.88rem; text-decoration: none; transition: all 0.2s;
+  letter-spacing: 0.2px; white-space: nowrap;
+}
+.nav-cta:hover { background: var(--cyan-light) !important; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,229,200,0.35); }
+.hamburger { display: none; flex-direction: column; cursor: pointer; gap: 5px; background: none; border: none; padding: 8px; }
+.hamburger span { width: 24px; height: 3px; background: #fff; transition: 0.3s; border-radius: 2px; }
+
+/* ========== HERO ========== */
+.demo-hero {
+  padding: 140px 0 80px;
+  background: #030808;
+  position: relative; overflow: hidden;
+  border-bottom: 2px solid rgba(0,229,200,0.4);
+}
+.demo-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 55% 30%, rgba(0,229,200,0.04), transparent 70%),
+    radial-gradient(ellipse 50% 50% at 25% 65%, rgba(0,229,200,0.025), transparent 55%),
+    radial-gradient(ellipse 35% 35% at 80% 55%, rgba(26,107,107,0.04), transparent 50%);
+}
+.demo-hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,229,200,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,200,0.015) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, rgba(0,0,0,0.4), transparent);
+}
+.demo-hero-content {
+  max-width: 700px; margin: 0 auto; padding: 0 32px;
+  position: relative; z-index: 10; text-align: center;
+}
+.demo-hero h1 {
+  font-family: var(--font-body); font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800; line-height: 1.15; color: #fff;
+  margin-bottom: 20px; letter-spacing: 0.5px; text-transform: uppercase;
+}
+.demo-hero h1 em {
+  font-style: normal;
+  background: linear-gradient(90deg, #00E5C8, #1A6B6B, #FF6F61, #6A4C93, #00E5C8);
+  background-size: 300% 100%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: heroGradientFlow 6s ease-in-out infinite;
+}
+@keyframes heroGradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.demo-hero p {
+  font-size: 1.05rem; color: rgba(255,255,255,0.55); line-height: 1.7;
+  max-width: 550px; margin: 0 auto;
+}
+
+/* ========== MAIN LAYOUT ========== */
+.demo-layout {
+  max-width: 1200px; margin: 0 auto; padding: 80px 32px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 64px;
+  align-items: start;
+}
+
+/* ========== LEFT: VALUE PROPS ========== */
+.demo-value h2 {
+  font-family: var(--font-body); font-size: 1.5rem; font-weight: 800;
+  color: var(--gray-900); margin-bottom: 12px;
+  letter-spacing: 0.5px; text-transform: uppercase;
+}
+.demo-value > p {
+  font-size: 0.95rem; color: var(--gray-500); line-height: 1.7;
+  margin-bottom: 40px;
+}
+.value-card {
+  display: flex; gap: 16px; padding: 20px;
+  border-radius: var(--radius-lg); border: 1px solid var(--gray-200);
+  background: var(--gray-50); margin-bottom: 16px;
+  transition: all 0.3s ease;
+}
+.value-card:hover { box-shadow: var(--shadow-md); border-color: var(--gray-300); transform: translateY(-2px); }
+.value-icon {
+  width: 44px; height: 44px; border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.value-icon.teal { background: rgba(26,107,107,0.1); color: var(--teal); }
+.value-icon.cyan { background: rgba(0,229,200,0.1); color: var(--cyan); }
+.value-icon.coral { background: rgba(255,111,97,0.1); color: var(--coral); }
+.value-icon.purple { background: rgba(106,76,147,0.1); color: var(--purple); }
+.value-card h3 {
+  font-size: 0.88rem; font-weight: 800; color: var(--gray-900);
+  margin-bottom: 4px; letter-spacing: 0.3px; text-transform: uppercase;
+}
+.value-card p { font-size: 0.85rem; color: var(--gray-500); line-height: 1.6; }
+
+.demo-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  margin-top: 32px;
+}
+.demo-stat {
+  text-align: center; padding: 20px 12px;
+  border-radius: var(--radius-md); border: 1px solid var(--gray-200);
+  background: var(--white);
+}
+.demo-stat-num {
+  font-size: 1.6rem; font-weight: 800; color: var(--teal);
+  letter-spacing: -0.5px;
+}
+.demo-stat-label {
+  font-size: 0.68rem; font-weight: 600; color: var(--gray-400);
+  text-transform: uppercase; letter-spacing: 1px; margin-top: 2px;
+}
+
+/* ========== RIGHT: FORM ========== */
+.demo-form-card {
+  background: var(--white); border-radius: var(--radius-xl);
+  padding: 48px 40px; border: 1px solid var(--gray-200);
+  box-shadow: var(--shadow-lg);
+  position: sticky; top: 100px;
+}
+.demo-form-card h2 {
+  font-family: var(--font-body); font-size: 1.3rem; font-weight: 800;
+  color: var(--gray-900); margin-bottom: 6px;
+  letter-spacing: 0.5px; text-transform: uppercase;
+}
+.demo-form-card .form-subtitle {
+  font-size: 0.88rem; color: var(--gray-500); margin-bottom: 28px; line-height: 1.6;
+}
+.form-group { margin-bottom: 20px; }
+.form-group label {
+  display: block; font-size: 0.72rem; font-weight: 700;
+  color: var(--gray-600); text-transform: uppercase;
+  letter-spacing: 1.2px; margin-bottom: 6px;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%; padding: 12px 16px;
+  border: 1px solid var(--gray-200); border-radius: var(--radius-sm);
+  font-family: var(--font-body); font-size: 0.92rem;
+  color: var(--gray-800); background: var(--gray-50);
+  transition: all 0.2s; outline: none;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--cyan); background: var(--white);
+  box-shadow: 0 0 0 3px rgba(0,229,200,0.12);
+}
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: var(--gray-400); }
+.form-group textarea { resize: vertical; min-height: 100px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.form-interest-tags {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;
+}
+.interest-tag {
+  padding: 8px 16px; border-radius: 100px;
+  border: 1px solid var(--gray-200); background: var(--gray-50);
+  font-size: 0.78rem; font-weight: 600; color: var(--gray-500);
+  cursor: pointer; transition: all 0.2s; user-select: none;
+}
+.interest-tag:hover { border-color: var(--teal); color: var(--teal); }
+.interest-tag.selected {
+  background: rgba(26,107,107,0.08); border-color: var(--teal);
+  color: var(--teal); font-weight: 700;
+}
+
+.btn-submit {
+  width: 100%; padding: 16px;
+  background: var(--cyan); color: var(--gray-900);
+  border: none; border-radius: 100px;
+  font-family: var(--font-body); font-size: 0.88rem;
+  font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
+  cursor: pointer; transition: all 0.25s;
+  box-shadow: 0 4px 24px rgba(0,229,200,0.35);
+  margin-top: 8px;
+}
+.btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 36px rgba(0,229,200,0.5);
+  background: var(--cyan-light);
+}
+.btn-submit:active { transform: translateY(0); }
+
+.form-privacy {
+  font-size: 0.72rem; color: var(--gray-400); text-align: center;
+  margin-top: 16px; line-height: 1.5;
+}
+.form-privacy a { color: var(--teal); text-decoration: none; }
+.form-privacy a:hover { text-decoration: underline; }
+
+/* ========== SUCCESS STATE ========== */
+.demo-success {
+  display: none; text-align: center; padding: 40px 0;
+}
+.demo-success.show { display: block; }
+.demo-success .success-icon {
+  width: 72px; height: 72px; margin: 0 auto 20px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: rgba(0,229,200,0.1); color: var(--cyan);
+}
+.demo-success h3 {
+  font-size: 1.3rem; font-weight: 800; color: var(--gray-900);
+  margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.demo-success p {
+  font-size: 0.92rem; color: var(--gray-500); line-height: 1.7;
+  max-width: 360px; margin: 0 auto 24px;
+}
+.demo-success .success-detail {
+  background: var(--gray-50); border-radius: var(--radius-md);
+  padding: 20px; border: 1px solid var(--gray-200);
+  margin-bottom: 24px;
+}
+.demo-success .success-detail-item {
+  display: flex; justify-content: space-between; padding: 6px 0;
+  font-size: 0.82rem;
+}
+.demo-success .success-detail-item .label { color: var(--gray-400); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.68rem; }
+.demo-success .success-detail-item .value { color: var(--gray-800); font-weight: 700; }
+.btn-back {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 28px; border-radius: 100px;
+  border: 2px solid var(--gray-200); background: var(--white);
+  font-family: var(--font-body); font-size: 0.82rem;
+  font-weight: 700; color: var(--gray-600); cursor: pointer;
+  transition: all 0.2s; text-decoration: none;
+  letter-spacing: 0.5px; text-transform: uppercase;
+}
+.btn-back:hover { border-color: var(--teal); color: var(--teal); }
+
+/* ========== FOOTER ========== */
+footer {
+  background: #041E1E; color: rgba(255,255,255,0.5);
+  padding: 48px 0 24px;
+}
+.footer-container {
+  max-width: 1200px; margin: 0 auto; padding: 0 32px;
+}
+.footer-inner {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 16px;
+}
+.footer-inner .logo { color: #fff; font-size: 1.2rem; }
+.footer-inner p { font-size: 0.82rem; color: rgba(255,255,255,0.4); }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a {
+  color: rgba(255,255,255,0.45); text-decoration: none;
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.5px;
+  transition: color 0.2s; text-transform: uppercase;
+}
+.footer-links a:hover { color: var(--cyan); }
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1024px) {
+  .demo-layout { grid-template-columns: 1fr; gap: 48px; }
+  .demo-form-card { position: static; }
+}
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-links.open {
+    display: flex; flex-direction: column;
+    position: absolute; top: 100%; left: 0; right: 0;
+    background: var(--white); padding: 24px 32px; gap: 16px;
+    border-bottom: 1px solid var(--gray-200);
+    box-shadow: var(--shadow-md);
+  }
+  .nav-links.open a { color: var(--gray-600) !important; }
+  .nav-links.open a:hover { color: var(--cyan) !important; }
+  .nav-links.open .nav-cta { color: var(--gray-900) !important; }
+  .hamburger { display: flex; }
+  .demo-hero h1 { font-size: 1.6rem; }
+  .demo-form-card { padding: 32px 24px; }
+  .form-row { grid-template-columns: 1fr; }
+  .demo-stats { grid-template-columns: 1fr; }
+  .demo-hero { padding: 120px 0 60px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ========== NAVIGATION ========== -->
+<nav>
+  <div class="nav-container">
+    <a href="index.html" class="logo">founding<span>_</span>up</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html#journey">Journey</a></li>
+      <li><a href="index.html#curriculum">Activities</a></li>
+      <li><a href="index.html#how">How It Works</a></li>
+      <li><a href="index.html#leadership">Team</a></li>
+      <li><a href="login.html">Demo</a></li>
+      <li><a href="demo.html" class="nav-cta">Schedule Demo</a></li>
+    </ul>
+    <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ========== HERO ========== -->
+<section class="demo-hero">
+  <div class="demo-hero-grid"></div>
+  <div class="demo-hero-content">
+    <h1>See <em>Identity in Action</em></h1>
+    <p>Schedule a personalized walkthrough of the founding_up platform and discover how identity clarity transforms retention, career outcomes, and employer partnerships.</p>
+  </div>
+</section>
+
+<!-- ========== MAIN CONTENT ========== -->
+<div class="demo-layout">
+
+  <!-- LEFT: Value Propositions -->
+  <div class="demo-value">
+    <h2>What You'll See</h2>
+    <p>A 30-minute guided tour tailored to your role &mdash; whether you're a university administrator, employer partner, or workforce innovation leader.</p>
+
+    <div class="value-card">
+      <div class="value-icon teal"><i data-lucide="fingerprint"></i></div>
+      <div>
+        <h3>Student Identity Engine</h3>
+        <p>See how students discover who they are through the 4-phase identity journey &mdash; from Explorer to Professional &mdash; with real-time skill radar charts and career spectrum matching.</p>
+      </div>
+    </div>
+
+    <div class="value-card">
+      <div class="value-icon cyan"><i data-lucide="trending-up"></i></div>
+      <div>
+        <h3>University Intelligence</h3>
+        <p>Explore cohort dashboards, retention prediction models, phase velocity tracking, and the at-risk early warning system that helps advisors intervene before students disengage.</p>
+      </div>
+    </div>
+
+    <div class="value-card">
+      <div class="value-icon coral"><i data-lucide="briefcase"></i></div>
+      <div>
+        <h3>Employer Talent Pipeline</h3>
+        <p>Walk through the skill supply-demand matrix, candidate matching engine, and L&D cost projections that show employers exactly what they save compared to traditional recruiting.</p>
+      </div>
+    </div>
+
+    <div class="value-card">
+      <div class="value-icon purple"><i data-lucide="sparkles"></i></div>
+      <div>
+        <h3>Cleo AI Coach</h3>
+        <p>Meet Cleo &mdash; the AI guide that asks identity-building questions at the right moment, nudges students toward affirming actions, and surfaces career matches they didn't know existed.</p>
+      </div>
+    </div>
+
+    <div class="demo-stats">
+      <div class="demo-stat">
+        <div class="demo-stat-num">91%</div>
+        <div class="demo-stat-label">Retention Lift</div>
+      </div>
+      <div class="demo-stat">
+        <div class="demo-stat-num">66%</div>
+        <div class="demo-stat-label">Lower Hire Cost</div>
+      </div>
+      <div class="demo-stat">
+        <div class="demo-stat-num">2.1x</div>
+        <div class="demo-stat-label">Phase Velocity</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Form -->
+  <div class="demo-form-card">
+    <div id="formView">
+      <h2>Schedule Your Demo</h2>
+      <p class="form-subtitle">Fill out the form below and we'll set up a personalized walkthrough within 48 hours.</p>
+
+      <form id="demoForm" onsubmit="submitDemo(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" placeholder="Jane" required>
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" placeholder="Rivera" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Work Email</label>
+          <input type="email" id="email" placeholder="jrivera@university.edu" required>
+        </div>
+
+        <div class="form-group">
+          <label for="org">Organization</label>
+          <input type="text" id="org" placeholder="Post University" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="role">Your Role</label>
+            <select id="role" required>
+              <option value="" disabled selected>Select your role</option>
+              <option value="university-admin">University Administrator</option>
+              <option value="provost">Provost / Academic Affairs</option>
+              <option value="student-success">Student Success / Advising</option>
+              <option value="career-services">Career Services</option>
+              <option value="employer-ta">Employer / Talent Acquisition</option>
+              <option value="employer-ld">Employer / L&D</option>
+              <option value="workforce-dev">Workforce Development</option>
+              <option value="policy">Policy / Government</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="size">Students / Employees</label>
+            <select id="size">
+              <option value="" disabled selected>Approximate size</option>
+              <option value="<500">Under 500</option>
+              <option value="500-2000">500 &ndash; 2,000</option>
+              <option value="2000-10000">2,000 &ndash; 10,000</option>
+              <option value="10000-50000">10,000 &ndash; 50,000</option>
+              <option value="50000+">50,000+</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>I'm Most Interested In</label>
+          <div class="form-interest-tags">
+            <span class="interest-tag" onclick="toggleTag(this)">Student Retention</span>
+            <span class="interest-tag" onclick="toggleTag(this)">Career Outcomes</span>
+            <span class="interest-tag" onclick="toggleTag(this)">Employer Pipeline</span>
+            <span class="interest-tag" onclick="toggleTag(this)">Skill Tracking</span>
+            <span class="interest-tag" onclick="toggleTag(this)">AI Coaching</span>
+            <span class="interest-tag" onclick="toggleTag(this)">Workforce Dev</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="notes">Anything Else?</label>
+          <textarea id="notes" placeholder="Tell us about your goals or specific challenges..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Request Demo</button>
+      </form>
+
+      <p class="form-privacy">We respect your privacy. Your information is used only to schedule your demo. <a href="#">Privacy Policy</a></p>
+    </div>
+
+    <!-- Success State -->
+    <div class="demo-success" id="successView">
+      <div class="success-icon"><i data-lucide="check-circle" style="width:36px;height:36px;"></i></div>
+      <h3>Demo Requested!</h3>
+      <p>Thank you for your interest. Our team will reach out within 48 hours to schedule your personalized walkthrough.</p>
+      <div class="success-detail">
+        <div class="success-detail-item">
+          <span class="label">Name</span>
+          <span class="value" id="confirmName">&mdash;</span>
+        </div>
+        <div class="success-detail-item">
+          <span class="label">Email</span>
+          <span class="value" id="confirmEmail">&mdash;</span>
+        </div>
+        <div class="success-detail-item">
+          <span class="label">Organization</span>
+          <span class="value" id="confirmOrg">&mdash;</span>
+        </div>
+        <div class="success-detail-item">
+          <span class="label">Interests</span>
+          <span class="value" id="confirmInterests">&mdash;</span>
+        </div>
+      </div>
+      <a href="index.html" class="btn-back"><i data-lucide="arrow-left" style="width:16px;height:16px;"></i> Back to Home</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <div class="footer-container">
+    <div class="footer-inner">
+      <a href="index.html" class="logo">founding<span>_</span>up</a>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="portals/student/">Student</a>
+        <a href="portals/university/">University</a>
+        <a href="portals/employer/">Employer</a>
+      </div>
+      <p>&copy; 2026 founding_up. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Lucide icons
+lucide.createIcons();
+
+// Toggle interest tags
+function toggleTag(el) {
+  el.classList.toggle('selected');
+}
+
+// Submit demo form
+function submitDemo(e) {
+  e.preventDefault();
+
+  const firstName = document.getElementById('firstName').value;
+  const lastName = document.getElementById('lastName').value;
+  const email = document.getElementById('email').value;
+  const org = document.getElementById('org').value;
+
+  // Gather selected interests
+  const tags = document.querySelectorAll('.interest-tag.selected');
+  const interests = Array.from(tags).map(t => t.textContent).join(', ') || 'General overview';
+
+  // Populate confirmation
+  document.getElementById('confirmName').textContent = firstName + ' ' + lastName;
+  document.getElementById('confirmEmail').textContent = email;
+  document.getElementById('confirmOrg').textContent = org;
+  document.getElementById('confirmInterests').textContent = interests;
+
+  // Switch to success view
+  document.getElementById('formView').style.display = 'none';
+  document.getElementById('successView').classList.add('show');
+
+  // Re-init lucide for new icons
+  lucide.createIcons();
+
+  // Scroll to top of form card
+  document.querySelector('.demo-form-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+<script src="feedback.js"></script>
+
+</body>
+</html>

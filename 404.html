@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page Not Found — founding_up</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --teal: #1A6B6B;
+  --cyan: #00E5C8;
+  --gray-400: #94A3B8;
+  --gray-800: #1E293B;
+  --gray-900: #0F172A;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+html, body { height: 100%; }
+body {
+  font-family: var(--font-body);
+  background: linear-gradient(165deg, #0a1a1a 0%, #0d2626 35%, #0a1a1a 100%);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Nav */
+nav {
+  padding: 18px 0;
+  background: transparent;
+}
+.nav-container {
+  max-width: 1200px; margin: 0 auto; padding: 0 32px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.logo {
+  font-family: var(--font-body);
+  font-size: 1.45rem; font-weight: 700;
+  color: #fff; text-decoration: none;
+  letter-spacing: -0.02em;
+}
+.logo span { color: var(--cyan); }
+.nav-links { list-style: none; display: flex; gap: 10px; }
+.nav-links a {
+  color: rgba(255,255,255,0.75); text-decoration: none;
+  font-size: 0.82rem; font-weight: 500; letter-spacing: 0.06em;
+  text-transform: uppercase; padding: 8px 14px; border-radius: 8px;
+  transition: all 0.2s;
+}
+.nav-links a:hover { color: #fff; background: rgba(0,229,200,0.1); }
+.nav-cta {
+  background: rgba(0,229,200,0.15) !important;
+  border: 1px solid rgba(0,229,200,0.3) !important;
+  color: var(--cyan) !important;
+}
+
+/* Content */
+.error-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 32px;
+}
+.error-code {
+  font-family: var(--font-display);
+  font-size: clamp(6rem, 15vw, 12rem);
+  font-weight: 700;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--cyan), var(--teal));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0.25;
+  margin-bottom: -24px;
+}
+.error-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.error-desc {
+  color: var(--gray-400);
+  font-size: 1.1rem;
+  max-width: 480px;
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+.error-actions { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 28px; border-radius: 12px;
+  font-family: var(--font-body); font-size: 0.95rem; font-weight: 600;
+  text-decoration: none; transition: all 0.25s;
+  cursor: pointer; border: none;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--cyan), var(--teal));
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(0,229,200,0.25);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0,229,200,0.35);
+}
+.btn-secondary {
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+.btn-secondary:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.2);
+}
+
+/* Footer */
+.error-footer {
+  text-align: center;
+  padding: 24px 32px;
+  color: var(--gray-400);
+  font-size: 0.8rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-container">
+    <a href="/" class="logo">founding<span>_</span>up</a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/demo.html" class="nav-cta">Schedule Demo</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="error-content">
+  <div class="error-code">404</div>
+  <h1 class="error-title">Page not found</h1>
+  <p class="error-desc">
+    The page you're looking for doesn't exist or has been moved.
+    Let's get you back on track.
+  </p>
+  <div class="error-actions">
+    <a href="/" class="btn btn-primary">Back to Home</a>
+    <a href="/demo.html" class="btn btn-secondary">Schedule a Demo</a>
+  </div>
+</main>
+
+<footer class="error-footer">
+  &copy; 2026 founding_up. All rights reserved.
+</footer>
+
+<script src="/feedback.js"></script>
+</body>
+</html>

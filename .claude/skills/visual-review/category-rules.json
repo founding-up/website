@@ -1,0 +1,57 @@
+{
+  "rules": [
+    {
+      "id": "scoring",
+      "label": "Score Removed",
+      "color": "#f87171",
+      "match": {
+        "oldTextContains": ["Target:", "/100", "score"],
+        "newTextEmpty": true
+      }
+    },
+    {
+      "id": "evidence",
+      "label": "Evidence Tags",
+      "color": "#34d399",
+      "match": {
+        "parentClasses": ["evidence-tag", "phase-evidence"],
+        "tagNames": ["span"]
+      }
+    },
+    {
+      "id": "cleo",
+      "label": "Cleo Behavior",
+      "color": "#60a5fa",
+      "match": {
+        "textContains": ["Cleo", "AI guide", "AI mentor"],
+        "files": ["demo.html"]
+      }
+    },
+    {
+      "id": "activity",
+      "label": "Activity Design",
+      "color": "#93c5fd",
+      "match": {
+        "parentClasses": ["workshop-card", "workshop-body"],
+        "excludeTagNames": ["h4"]
+      }
+    },
+    {
+      "id": "cta",
+      "label": "CTA",
+      "color": "#fbbf24",
+      "match": {
+        "parentClasses": ["cta-section", "cta"],
+        "sectionLast": true
+      }
+    },
+    {
+      "id": "framing",
+      "label": "Framing",
+      "color": "#a78bfa",
+      "match": {
+        "default": true
+      }
+    }
+  ]
+}

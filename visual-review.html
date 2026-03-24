@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visual Review — Danielle Rosenthal — Framework Edits</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0e1a;color:#c8ccd4;overflow:hidden}
+
+/* Toolbar */
+.toolbar{position:fixed;top:0;left:0;right:0;z-index:1000;background:#111827ee;backdrop-filter:blur(12px);border-bottom:1px solid #1e2433;padding:6px 16px;display:flex;align-items:center;gap:10px;height:42px}
+.toolbar h1{font-size:13px;color:#fff;white-space:nowrap}
+.edit-nav{display:flex;gap:2px;flex:1;flex-wrap:nowrap;overflow-x:auto}
+.pip{width:24px;height:24px;border-radius:4px;border:1px solid #1e2433;background:#0a0e1a;color:#7a8299;font-size:10px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.pip:hover{border-color:#4b5563;color:#fff}
+.pip.active{background:#2563eb;border-color:#2563eb;color:#fff}
+.pip.approved{background:#064e3b;border-color:#065f46;color:#34d399}
+.pip.rejected{background:#450a0a;border-color:#7f1d1d;color:#f87171;opacity:.5}
+
+/* Summary bar */
+.summary{display:flex;gap:12px;align-items:center;margin-left:auto;font-size:11px;white-space:nowrap}
+.summary .s-approved{color:#34d399}.summary .s-rejected{color:#f87171}.summary .s-pending{color:#fbbf24}
+.export-btn{padding:4px 12px;background:#2563eb;border:none;border-radius:4px;color:#fff;font-size:11px;font-weight:600;cursor:pointer}
+.export-btn:hover{background:#1d4ed8}
+
+/* Frames */
+.frames{display:grid;grid-template-columns:1fr 1fr;height:calc(100vh - 42px);margin-top:42px}
+.col{position:relative;overflow:hidden}
+.col iframe{width:100%;height:100%;border:none}
+.col-label{position:absolute;top:6px;left:50%;transform:translateX(-50%);z-index:10;padding:3px 14px;border-radius:16px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;pointer-events:none}
+.col-label.cur{background:#450a0aee;color:#f87171;border:1px solid #7f1d1d}
+.col-label.dan{background:#064e3bee;color:#34d399;border:1px solid #065f46}
+.divider{position:absolute;top:0;bottom:0;right:0;width:2px;background:#2563eb;z-index:5}
+
+/* Annotation card */
+.anno{position:fixed;bottom:12px;right:12px;z-index:999;width:420px;background:#111827;border:1px solid #1e2433;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.6);overflow:hidden;transition:transform .2s}
+.anno-head{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#0d1117;border-bottom:1px solid #1e2433}
+.anno-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff}
+.anno-num.pending-ring{background:#dc2626}
+.anno-num.approved-ring{background:#059669}
+.anno-num.rejected-ring{background:#6b7280}
+.anno-cat{font-size:9px;padding:2px 7px;border-radius:3px;font-weight:600}
+.anno-desc{font-size:12px;color:#c8ccd4;font-weight:500}
+.anno-loc{font-size:10px;color:#4b5563;margin-left:auto}
+
+.anno-body{padding:10px 12px;max-height:280px;overflow-y:auto}
+.anno-section{margin-bottom:8px}
+.anno-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px}
+.anno-label.old{color:#f87171}.anno-label.new{color:#34d399}
+.anno-text{font-size:12px;line-height:1.5;color:#9ca3af;padding:8px 10px;border-radius:6px}
+.anno-text.old{background:#1a0a0a;border:1px solid #2d0a0a}
+.anno-text.new{background:#0a1a0d;border:2px solid #064e3b;box-shadow:0 0 0 2px #dc2626,0 0 8px rgba(220,38,38,.3)}
+.anno-text.new.approved-state{box-shadow:0 0 0 2px #059669,0 0 8px rgba(5,150,105,.3);border-color:#065f46}
+.anno-text.new.rejected-state{box-shadow:none;border-color:#374151;opacity:.5}
+.del{background:#f8717130;color:#f87171;text-decoration:line-through;padding:0 2px;border-radius:2px}
+.ins{background:#34d39930;color:#34d399;padding:0 2px;border-radius:2px}
+.anno-note{font-size:11px;color:#7a8299;padding:6px 12px;border-top:1px solid #1e2433;background:#0d1117;line-height:1.4}
+
+/* Approval buttons */
+.anno-actions{display:flex;border-top:1px solid #1e2433}
+.anno-actions button{flex:1;padding:8px;background:transparent;border:none;font-size:12px;font-weight:600;cursor:pointer;transition:background .15s}
+.btn-approve{color:#34d399;border-right:1px solid #1e2433}
+.btn-approve:hover{background:#064e3b}
+.btn-approve.selected{background:#064e3b}
+.btn-reject{color:#f87171;border-right:1px solid #1e2433}
+.btn-reject:hover{background:#450a0a}
+.btn-reject.selected{background:#450a0a}
+.btn-prev{color:#60a5fa;border-right:1px solid #1e2433}
+.btn-prev:hover{background:#172554}
+.btn-next{color:#60a5fa}
+.btn-next:hover{background:#172554}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <h1>Danielle Rosenthal — Framework Edits</h1>
+  <div class="edit-nav" id="nav"></div>
+  <div class="summary" id="summary"></div>
+  <button class="export-btn" onclick="exportApprovals()">Export Approvals</button>
+</div>
+
+<div class="frames">
+  <div class="col">
+    <div class="col-label cur">Current</div>
+    <iframe id="ifA" src="/site/index.html"></iframe>
+    <div class="divider"></div>
+  </div>
+  <div class="col">
+    <div class="col-label dan">Proposed</div>
+    <iframe id="ifB" src="/site-danielle/index.html"></iframe>
+  </div>
+</div>
+
+<div class="anno" id="anno">
+  <div class="anno-head">
+    <div class="anno-num" id="aNum">1</div>
+    <div class="anno-cat" id="aCat"></div>
+    <div class="anno-desc" id="aDesc"></div>
+    <div class="anno-loc" id="aLoc"></div>
+  </div>
+  <div class="anno-body">
+    <div class="anno-section"><div class="anno-label old">Current</div><div class="anno-text old" id="aOld"></div></div>
+    <div class="anno-section"><div class="anno-label new">Proposed Change</div><div class="anno-text new" id="aNew"></div></div>
+  </div>
+  <div class="anno-note" id="aNote"></div>
+  <div class="anno-actions">
+    <button class="btn-approve" onclick="decide('approved')">&#x2713; Approve</button>
+    <button class="btn-reject" onclick="decide('rejected')">&#x2717; Reject</button>
+    <button class="btn-prev" onclick="go(-1)">&larr; Prev</button>
+    <button class="btn-next" onclick="go(1)">Next &rarr;</button>
+  </div>
+</div>
+
+<script>
+// === MANIFEST DATA (injected by generate-review.py) ===
+const MANIFEST = {
+  "title": "Danielle Rosenthal \u2014 Framework Edits",
+  "beforeDir": "/site/",
+  "afterDir": "/site-danielle/",
+  "baseFile": "index.html",
+  "previewPort": 8080,
+  "jiraStory": "FUFO-282",
+  "categories": [
+    {
+      "id": "framing",
+      "label": "Framing",
+      "color": "#a78bfa"
+    },
+    {
+      "id": "evidence",
+      "label": "Evidence Tags",
+      "color": "#34d399"
+    },
+    {
+      "id": "scoring",
+      "label": "Score Removed",
+      "color": "#f87171"
+    },
+    {
+      "id": "activity",
+      "label": "Activity Design",
+      "color": "#93c5fd"
+    },
+    {
+      "id": "cta",
+      "label": "CTA",
+      "color": "#fbbf24"
+    },
+    {
+      "id": "cleo",
+      "label": "Cleo Behavior",
+      "color": "#60a5fa"
+    }
+  ],
+  "edits": [
+    {
+      "id": "edit-1",
+      "category": "framing",
+      "file": "index.html",
+      "line": 638,
+      "selector": ".phases-section .section-text",
+      "scrollY": 580,
+      "description": "Core identity paragraph",
+      "oldText": "Identity isn't assigned \u2014 it's uncovered. Through four progressive phases, students move from discovering what genuinely drives them to graduating workforce-ready with employer-verified proof of who they are and what they can do.",
+      "newText": "Identity isn't something you find \u2014 it becomes visible when you start doing things and paying attention to what you're already capable of. Through four developmental phases, students learn to recognize their own extraordinary capabilities, test where those capabilities create impact, and build a clear direction from that foundation. The program develops identity clarity \u2014 knowing your direction and being able to act on it \u2014 while building the workforce readiness that connects that clarity to career outcomes.",
+      "reasoning": "Identity is not uncovered \u2014 it becomes visible through action. This is the foundational reframe. Note the additional sentence about identity clarity and workforce readiness."
+    },
+    {
+      "id": "edit-2",
+      "category": "framing",
+      "file": "index.html",
+      "line": 667,
+      "selector": "svg text",
+      "scrollY": 680,
+      "description": "SVG label",
+      "oldText": "Who you are when no one is watching",
+      "newText": "The capabilities you already have",
+      "reasoning": "Shifts from introspective/private framing to action/capability framing."
+    },
+    {
+      "id": "edit-3",
+      "category": "framing",
+      "file": "index.html",
+      "line": 853,
+      "selector": ".phase-card:nth-child(1)",
+      "scrollY": 1750,
+      "description": "Explorer phase heading + description",
+      "oldText": "Uncover What Drives You Discover what genuinely moves you through hands-on activities, conversations with Cleo, and guided reflection. This surfaces your interests, values, and strengths \u2014 not what you think you should be, but who you are when no one is watching.",
+      "newText": "Recognize What You Already Do You already have extraordinary capabilities \u2014 skills you practice whether anyone asks you to or not, things you might not even realize are powerful. Through real-world action, reflection with Cleo, and guided activities, this phase helps you see those capabilities clearly and start testing where they create impact.",
+      "reasoning": "The 'superpowers' concept: students already have capabilities they don't recognize as extraordinary."
+    },
+    {
+      "id": "edit-4",
+      "category": "evidence",
+      "file": "index.html",
+      "line": 856,
+      "selector": ".phase-card:nth-child(1)",
+      "scrollY": 1850,
+      "description": "Explorer evidence tags",
+      "oldText": "Self-Reported Peer-Confirmed",
+      "newText": "Surfacing what matters Noticing patterns in behavior",
+      "reasoning": "Evidence tags describe what the student IS DOING, not a validation tier they've been assigned."
+    },
+    {
+      "id": "edit-5",
+      "category": "scoring",
+      "file": "index.html",
+      "line": 859,
+      "selector": ".phase-card:nth-child(1)",
+      "scrollY": 1870,
+      "description": "Explorer phase target: 70/100",
+      "oldText": "Target: 70/100",
+      "newText": "(removed entirely)",
+      "reasoning": "Identity is not scored. Numeric targets imply linear progression that doesn't match the research."
+    },
+    {
+      "id": "edit-6",
+      "category": "evidence",
+      "file": "index.html",
+      "line": 869,
+      "selector": ".phase-card:nth-child(2)",
+      "scrollY": 2050,
+      "description": "Investigator evidence tags",
+      "oldText": "Peer-Confirmed Project-Verified",
+      "newText": "Testing signals through action Interpreting real-world feedback",
+      "reasoning": "Same principle \u2014 action-oriented evidence descriptions, not tier labels."
+    },
+    {
+      "id": "edit-7",
+      "category": "scoring",
+      "file": "index.html",
+      "line": 872,
+      "selector": ".phase-card:nth-child(2)",
+      "scrollY": 2070,
+      "description": "Investigator phase target: 78/100",
+      "oldText": "Target: 78/100",
+      "newText": "(removed entirely)",
+      "reasoning": "Removed \u2014 same rationale as Edit 5."
+    },
+    {
+      "id": "edit-8",
+      "category": "evidence",
+      "file": "index.html",
+      "line": 882,
+      "selector": ".phase-card:nth-child(3)",
+      "scrollY": 2250,
+      "description": "Practitioner evidence tags",
+      "oldText": "Project-Verified Educator-Confirmed",
+      "newText": "Building evidence of direction Connecting to career pathways",
+      "reasoning": "Practitioner: connecting identity to career direction, not collecting verification stamps."
+    },
+    {
+      "id": "edit-9",
+      "category": "scoring",
+      "file": "index.html",
+      "line": 885,
+      "selector": ".phase-card:nth-child(3)",
+      "scrollY": 2270,
+      "description": "Practitioner phase target: 85/100",
+      "oldText": "Target: 85/100",
+      "newText": "(removed entirely)",
+      "reasoning": "Removed \u2014 same rationale as Edit 5."
+    },
+    {
+      "id": "edit-10",
+      "category": "evidence",
+      "file": "index.html",
+      "line": 895,
+      "selector": ".phase-card:nth-child(4)",
+      "scrollY": 2450,
+      "description": "Professional evidence tags",
+      "oldText": "Educator-Confirmed Employer-Verified",
+      "newText": "Converged on a clear direction Integrated, validated evidence",
+      "reasoning": "Professional: convergence on direction, not an endpoint validation."
+    },
+    {
+      "id": "edit-11",
+      "category": "scoring",
+      "file": "index.html",
+      "line": 898,
+      "selector": ".phase-card:nth-child(4)",
+      "scrollY": 2470,
+      "description": "Professional phase target: 90/100",
+      "oldText": "Target: 90/100",
+      "newText": "(removed entirely)",
+      "reasoning": "Removed \u2014 same rationale as Edit 5."
+    },
+    {
+      "id": "edit-12",
+      "category": "activity",
+      "file": "index.html",
+      "line": 929,
+      "selector": "text:Interest Mapping",
+      "scrollY": 3234,
+      "description": "Interest Mapping activity",
+      "oldText": "Guided conversations with Cleo AI to surface genuine interests through behavioral questions \u2014 discovering what draws you in when no one's watching.",
+      "newText": "Guided conversations with Cleo AI to help you recognize the things you already do \u2014 the skills you practice whether anyone pays you to or not \u2014 and start seeing them as the strengths they are.",
+      "reasoning": "Recognition language applied to the core Explorer activity."
+    },
+    {
+      "id": "edit-13",
+      "category": "activity",
+      "file": "index.html",
+      "line": 947,
+      "selector": "text:What Problems Can You Solve?",
+      "scrollY": 3698,
+      "description": "What Problems Can You Solve?",
+      "oldText": "Explore how industries are evolving and where different skills create impact. Identify real-world problems that align with your emerging interests. 30 min Reflection",
+      "newText": "Talk to people working on real problems. Explore where different capabilities create impact. Reflect on which problems energize you \u2014 and what that reveals about your strengths. 30 min + action Action + Reflection",
+      "reasoning": "Changed from passive reflection to real-world engagement. Students talk to people, not just think."
+    },
+    {
+      "id": "edit-14",
+      "category": "activity",
+      "file": "index.html",
+      "line": 970,
+      "selector": "text:Curiosity Sprint",
+      "scrollY": 4139,
+      "description": "Curiosity Sprint \u2192 First Step Challenge",
+      "oldText": "Discovery Discovery Deep-Dive Curiosity Sprint Rapid exploration of 5 new interest areas in a single session. Try creative, analytical, interpersonal, and kinesthetic activities to find what clicks. 60 min Hands-On",
+      "newText": "Real-World Real-World Action First Step Challenge Take a low-stakes real-world action \u2014 have a conversation with someone in a field that interests you, attend an event, or try something new. Then reflect on what you learned about yourself from the experience. Varies Off-Platform",
+      "reasoning": "Replaced in-platform exercise with real-world action. Identity develops through doing, not browsing.",
+      "selectorAfter": "text:First Step Challenge"
+    },
+    {
+      "id": "edit-15",
+      "category": "framing",
+      "file": "index.html",
+      "line": 989,
+      "selector": "text:Interest Patterns",
+      "scrollY": 4579,
+      "description": "Pattern recognition",
+      "oldText": "Review your data to identify consistent themes across your interests. Which drew you back over time? Which were fleeting? Patterns reveal identity.",
+      "newText": "Review your experiences to identify consistent themes. Which activities drew you back over time? Which were fleeting? Patterns in your behavior show you what you're already building toward.",
+      "reasoning": "'Patterns reveal identity' is too deterministic. Patterns show direction, not destiny."
+    },
+    {
+      "id": "edit-16",
+      "category": "framing",
+      "file": "index.html",
+      "line": 998,
+      "selector": "text:Project Lab",
+      "scrollY": 4579,
+      "description": "Project Lab description",
+      "oldText": "Build portfolio projects that validate your emerging skills. Move from self-reported to project-verified on the validation hierarchy.",
+      "newText": "Build portfolio projects that test your emerging skills in real contexts. Create tangible evidence of what you can do \u2014 and learn what that evidence tells you about your direction.",
+      "reasoning": "Removed 'validation hierarchy.' Evidence informs direction, it doesn't rank you."
+    },
+    {
+      "id": "edit-17",
+      "category": "framing",
+      "file": "index.html",
+      "line": 1118,
+      "selector": "text:College & Career Launch",
+      "scrollY": 7160,
+      "description": "College & Career Launch",
+      "oldText": "Map your post-graduation pathway with data-backed confidence. Align college major selection or career entry with your validated identity profile.",
+      "newText": "Map your post-graduation pathway with clarity and confidence. Align college major selection or career entry with the direction you've built and validated through real-world experience.",
+      "reasoning": "'Validated identity profile' sounds like a credit score. Replace with experiential language."
+    },
+    {
+      "id": "edit-18",
+      "category": "framing",
+      "file": "index.html",
+      "line": 1127,
+      "selector": "text:Internship Showcase",
+      "scrollY": 7602,
+      "description": "Internship Showcase",
+      "oldText": "Complete an internship matched through identity alignment scoring. Earn the highest validation level \u2014 employer-verified skills for your portfolio.",
+      "newText": "Complete an internship matched to your demonstrated strengths and direction. Gain real-world experience that deepens your understanding of where your capabilities create impact.",
+      "reasoning": "Removed scoring/hierarchy language. Internships deepen understanding."
+    },
+    {
+      "id": "edit-19",
+      "category": "framing",
+      "file": "index.html",
+      "line": 1177,
+      "selector": "text:Evidence-Based Portfolio",
+      "scrollY": 8200,
+      "description": "Evidence portfolio \u2014 'scored evidence' \u2192 'evidence of real capabilities'",
+      "oldText": "Every workshop, reflection, and project produces scored evidence of real competencies. Not a quiz \u2014 a portfolio of demonstrated capability that grows with each phase.",
+      "newText": "Every real-world action, reflection, and project produces evidence of real capabilities. Not a quiz \u2014 a portfolio of demonstrated strengths that grows with each phase.",
+      "reasoning": "Remove 'scored' \u2014 evidence is not scored. Remove 'competencies' \u2014 capabilities is the correct framing."
+    },
+    {
+      "id": "edit-20",
+      "category": "evidence",
+      "file": "index.html",
+      "line": 1189,
+      "selector": "text:External Evidence",
+      "scrollY": 8500,
+      "description": "Validation model rewrite \u2014 hierarchy \u2192 all-phase availability",
+      "oldText": "Employers verify awards. Certifications confirm readiness. Each validation level \u2014 activity complete, instructor verified, employer verified \u2014 raises the stakes and the credibility.",
+      "newText": "Multiple forms of evidence \u2014 self-assessed, peer-confirmed, project-verified, educator-confirmed, and employer-verified \u2014 are available across every phase. What changes is the student's capacity to interpret and integrate that evidence into a coherent direction.",
+      "reasoning": "CRITICAL: ALL evidence types available in ALL phases. The old text implied a validation ladder (activity \u2192 instructor \u2192 employer). Danielle's rewrite says the hierarchy is the student's growing capacity to interpret evidence, not a tier system."
+    },
+    {
+      "id": "edit-21",
+      "category": "framing",
+      "file": "index.html",
+      "line": 1207,
+      "selector": "text:Phase Progression",
+      "selectorAfter": "text:Phase Progression",
+      "scrollY": 8800,
+      "description": "Phase conclusion \u2014 'evidence the market can see' \u2192 'know your direction'",
+      "oldText": "Explorer to Investigator to Practitioner to Professional. Each phase builds on the last. By the time you graduate, your identity isn't a question \u2014 it's evidence the market can see.",
+      "newText": "Explorer to Investigator to Practitioner to Professional. Each phase builds on the last. By the time you graduate, you know your direction, you can act on it, and you can articulate why.",
+      "reasoning": "Identity isn't about external proof ('evidence the market can see'). It's about internal clarity ('know your direction'). The outcome is agency, not marketability."
+    },
+    {
+      "id": "edit-22",
+      "category": "cta",
+      "file": "index.html",
+      "line": 1207,
+      "selector": ".cta-section, section:last-of-type",
+      "scrollY": 9500,
+      "description": "Phase conclusion + final CTA",
+      "oldText": "Explorer to Investigator to Practitioner to Professional. Each phase builds on the last. By the time you graduate, your identity isn't a question \u2014 it's evidence the market can see. Built by Leaders Who've Scaled It Before Our founding team brings decades of experience from Amazon, Cisco, and higher education \u2014 building the systems that power identity-driven workforce transformation. Founding Team DD Dan Dillard CEO &amp; Founder Former CTO and Amazon Global CTO to Cisco \u2014 leading founding_up's vision for identity-driven workforce transformation MW Matt Wagner COO, Founder Driving operational strategy behind founding_up's identity-first approach to workforce development and student outcomes ML Matthew Liddle CTO (AI/ML), Founder Former Sr. Leader at Amazon who built predictive systems scaling to 100M+ users GB Gene Baxter CTO (Platform), Founder Former Amazon leader architecting enterprise-grade platform infrastructure DR Danielle Rosenthal Chief Researcher, Founder PhD candidate (2026) with 15 years of identity profiling research powering the evidence model Advisors Dr. Molly Beth Malcolm Former Executive VP Chancellor, Austin Community College District Dr. Alton Barron Chairman, Post University Dr. Robert C. Robbins Former University President Dr. Richard Box Chairman Emeritus, Texas A&amp;M Board of Regents Ready to Discover Your Identity? Join the identity clarity program that transforms \"What do you want to be?\" from a paralyzing question into an exciting journey of discovery.",
+      "newText": "Explorer to Investigator to Practitioner to Professional. Each phase builds on the last. By the time you graduate, you know your direction, you can act on it, and you can articulate why. Built by Leaders Who've Scaled It Before Our founding team brings decades of experience from Amazon, Cisco, and higher education \u2014 building the systems that power identity-driven workforce transformation. Founding Team DD Dan Dillard CEO &amp; Founder Former CTO and Amazon Global CTO to Cisco \u2014 leading founding_up's vision for identity-driven workforce transformation MW Matt Wagner COO, Founder Driving operational strategy behind founding_up's identity-first approach to workforce development and student outcomes ML Matthew Liddle CTO (AI/ML), Founder Former Sr. Leader at Amazon who built predictive systems scaling to 100M+ users GB Gene Baxter CTO (Platform), Founder Former Amazon leader architecting enterprise-grade platform infrastructure DR Danielle Rosenthal Chief Researcher, Founder PhD candidate (2026) with 15 years of identity profiling research powering the evidence model Advisors Dr. Molly Beth Malcolm Former Executive VP Chancellor, Austin Community College District Dr. Alton Barron Chairman, Post University Dr. Robert C. Robbins Former University President Dr. Richard Box Chairman Emeritus, Texas A&amp;M Board of Regents Ready to See What You're Capable Of? Join the identity clarity program that helps students recognize the extraordinary capabilities they already have \u2014 and build a direction from them.",
+      "reasoning": "Final CTA: 'discover' \u2192 'recognize capabilities.' Internal coherence, not external proof."
+    },
+    {
+      "id": "edit-23",
+      "category": "framing",
+      "file": "demo.html",
+      "line": 399,
+      "selector": ".demo-card:first-child p",
+      "scrollY": 0,
+      "description": "Student Identity Engine (demo.html)",
+      "oldText": "See how students discover who they are through the 4-phase identity journey &mdash; from Explorer to Professional &mdash; with real-time skill radar charts and career spectrum matching.",
+      "newText": "See how students recognize their own capabilities and build a clear direction through the 4-phase identity journey &mdash; from Explorer to Professional &mdash; with career pathway mapping and evidence portfolios.",
+      "reasoning": "Radar charts are a visualization, not the product. Replace with what matters: pathways and evidence."
+    },
+    {
+      "id": "edit-24",
+      "category": "cleo",
+      "file": "demo.html",
+      "line": 423,
+      "selector": ".demo-card:nth-child(2) p",
+      "scrollY": 0,
+      "description": "Cleo AI description (demo.html)",
+      "oldText": "Meet Cleo &mdash; the AI guide that asks identity-building questions at the right moment, nudges students toward affirming actions, and surfaces career matches they didn't know existed.",
+      "newText": "Meet Cleo &mdash; the AI guide that helps students reflect on their experiences, notice patterns in what they're drawn to, decide what to try next, and surfaces career matches they didn't know existed. A navigator, not a prescriber.",
+      "reasoning": "Cleo doesn't nudge or prescribe. She helps students reflect, notice, and decide."
+    }
+  ]
+};
+
+const edits = MANIFEST.edits;
+const categories = {};
+MANIFEST.categories.forEach(c => { categories[c.id] = c; });
+
+// Session key for localStorage
+const SESSION = 'vr-' + MANIFEST.title.replace(/\s+/g, '-').toLowerCase().substring(0, 30);
+
+// Load saved state
+let state = {};
+try { state = JSON.parse(localStorage.getItem(SESSION) || '{}'); } catch(e) {}
+
+// Build nav pips
+const nav = document.getElementById('nav');
+edits.forEach(e => {
+  const b = document.createElement('button');
+  b.className = 'pip';
+  b.textContent = e.id.replace('edit-', '');
+  b.title = `${e.description}`;
+  const cat = categories[e.category];
+  if (cat) b.style.borderLeft = `3px solid ${cat.color}`;
+  b.onclick = () => show(e.id);
+  b.id = `pip-${e.id}`;
+  nav.appendChild(b);
+});
+
+function updatePipStates() {
+  edits.forEach(e => {
+    const pip = document.getElementById(`pip-${e.id}`);
+    if (!pip) return;
+    pip.classList.remove('approved', 'rejected', 'active');
+    const s = state[e.id] || 'pending';
+    if (s === 'approved') pip.classList.add('approved');
+    if (s === 'rejected') pip.classList.add('rejected');
+  });
+  if (currentId) {
+    const activePip = document.getElementById(`pip-${currentId}`);
+    if (activePip) activePip.classList.add('active');
+  }
+  updateSummary();
+}
+
+function updateSummary() {
+  const approved = edits.filter(e => state[e.id] === 'approved').length;
+  const rejected = edits.filter(e => state[e.id] === 'rejected').length;
+  const pending = edits.length - approved - rejected;
+  document.getElementById('summary').innerHTML =
+    `<span class="s-approved">${approved} approved</span>` +
+    `<span class="s-rejected">${rejected} rejected</span>` +
+    `<span class="s-pending">${pending} pending</span>`;
+}
+
+let currentId = null;
+function show(id) {
+  currentId = id;
+  const e = edits.find(x => x.id === id);
+  if (!e) return;
+  const cat = categories[e.category] || {};
+  const s = state[id] || 'pending';
+
+  // Update annotation card
+  const numEl = document.getElementById('aNum');
+  numEl.textContent = id.replace('edit-', '');
+  numEl.className = 'anno-num ' + s + '-ring';
+
+  const catEl = document.getElementById('aCat');
+  catEl.textContent = cat.label || e.category;
+  catEl.style.background = (cat.color || '#333') + '30';
+  catEl.style.color = cat.color || '#999';
+
+  document.getElementById('aDesc').textContent = e.description;
+  document.getElementById('aLoc').textContent = `${e.file}:${e.line}`;
+  document.getElementById('aOld').innerHTML = e.oldText;
+  const newEl = document.getElementById('aNew');
+  newEl.innerHTML = e.newText;
+  newEl.className = 'anno-text new' + (s !== 'pending' ? ` ${s}-state` : '');
+  document.getElementById('aNote').innerHTML = '\ud83d\udcdd ' + (e.reasoning || '');
+
+  // Update approve/reject button highlighting
+  document.querySelector('.btn-approve').classList.toggle('selected', s === 'approved');
+  document.querySelector('.btn-reject').classList.toggle('selected', s === 'rejected');
+
+  // Inject highlight first
+  injectHighlight(e);
+
+  // Scroll: inject a scroll script into the after iframe to scrollIntoView
+  syncing = true;
+  try {
+    const winB = document.getElementById('ifB').contentWindow;
+    const docB = document.getElementById('ifB').contentDocument;
+    const highlighted = docB.querySelector('.vr-highlighted');
+    if (highlighted || e.scrollY > 0) {
+      // Disable smooth scroll (it blocks programmatic scrollTop from parent)
+      const htmlB = docB.documentElement;
+      const htmlA = document.getElementById('ifA').contentDocument.documentElement;
+      htmlB.style.scrollBehavior = 'auto';
+      htmlA.style.scrollBehavior = 'auto';
+
+      // Use the manifest's scrollY — elements may be zero-height until scrolled into view
+      const targetY = e.scrollY || 0;
+      htmlB.scrollTop = targetY;
+      htmlA.scrollTop = targetY;
+
+      // Re-enable smooth scroll and re-inject highlight after layout settles
+      requestAnimationFrame(() => {
+        htmlB.style.scrollBehavior = '';
+        htmlA.style.scrollBehavior = '';
+        // Re-inject highlight now that the element should be laid out
+        setTimeout(() => { injectHighlight(e); }, 200);
+      });
+
+      setTimeout(() => { syncing = false; }, 400);
+    } else if (e.scrollY > 0) {
+      try { document.getElementById('ifA').contentWindow.scrollTo({top: e.scrollY, behavior:'smooth'}); } catch(x) {}
+      try { winB.scrollTo({top: e.scrollY, behavior:'smooth'}); } catch(x) {}
+      setTimeout(() => { syncing = false; }, 600);
+    } else {
+      syncing = false;
+    }
+  } catch(x) { syncing = false; }
+
+  updatePipStates();
+}
+
+function injectHighlight(edit) {
+  try {
+    const doc = document.getElementById('ifB').contentDocument;
+    if (!doc) return;
+
+    // Remove previous highlights — restore original styles
+    doc.querySelectorAll('.vr-highlighted').forEach(el => {
+      el.style.outline = el.dataset.vrOrigOutline || '';
+      el.style.outlineOffset = el.dataset.vrOrigOffset || '';
+      el.style.boxShadow = el.dataset.vrOrigShadow || '';
+      el.style.position = el.dataset.vrOrigPosition || '';
+      el.classList.remove('vr-highlighted');
+    });
+    doc.querySelectorAll('.vr-badge').forEach(el => el.remove());
+
+    if (!edit.selector) return;
+    let target = null;
+
+    // Use selectorAfter if available (for when Danielle changed the h4 title)
+    const sel = edit.selectorAfter || edit.selector;
+
+    // If selector starts with "text:" use text-based matching to find parent card
+    if (sel.startsWith('text:')) {
+      const searchText = sel.substring(5);
+      const allH4 = doc.querySelectorAll('h4');
+      for (const h4 of allH4) {
+        if (h4.textContent.trim() === searchText) {
+          target = h4.closest('.workshop-card') || h4.closest('.phase-card') || h4.closest('section') || h4.parentElement;
+          break;
+        }
+      }
+      // Fallback: try original selector if selectorAfter didn't match
+      if (!target && edit.selectorAfter && edit.selector.startsWith('text:')) {
+        const fallbackText = edit.selector.substring(5);
+        for (const h4 of allH4) {
+          if (h4.textContent.trim() === fallbackText) {
+            target = h4.closest('.workshop-card') || h4.closest('.phase-card') || h4.closest('section') || h4.parentElement;
+            break;
+          }
+        }
+      }
+    } else {
+      target = doc.querySelector(sel);
+    }
+    if (!target) return;
+
+    // Save original styles
+    const cs = doc.defaultView.getComputedStyle(target);
+    target.dataset.vrOrigOutline = target.style.outline;
+    target.dataset.vrOrigOffset = target.style.outlineOffset;
+    target.dataset.vrOrigShadow = target.style.boxShadow;
+    target.dataset.vrOrigPosition = target.style.position;
+
+    // Apply highlight directly to the element — no offset calculation needed
+    target.classList.add('vr-highlighted');
+    target.style.outline = '3px solid #dc2626';
+    target.style.outlineOffset = '4px';
+    target.style.boxShadow = '0 0 0 8px rgba(220,38,38,0.15), 0 0 30px rgba(220,38,38,0.25)';
+    if (cs.position === 'static') target.style.position = 'relative';
+
+    // Badge — positioned relative to the target element
+    const badge = doc.createElement('div');
+    badge.className = 'vr-badge';
+    badge.style.cssText = `
+      position:absolute;top:-14px;left:-14px;
+      width:24px;height:24px;border-radius:50%;
+      background:#dc2626;color:#fff;
+      font-size:11px;font-weight:700;font-family:system-ui;
+      display:flex;align-items:center;justify-content:center;
+      z-index:100000;box-shadow:0 2px 8px rgba(0,0,0,0.3);
+    `;
+    badge.textContent = edit.id.replace('edit-', '');
+    target.appendChild(badge);
+
+    // Inject styles if not already — including override to force all elements visible
+    if (!doc.getElementById('vr-styles')) {
+      const style = doc.createElement('style');
+      style.id = 'vr-styles';
+      style.textContent = `
+        /* Force all animated/hidden elements visible for review */
+        .workshop-card, .phase-card, .why-card, .journey-step,
+        section, .how-card, .team-card, .cta-section {
+          opacity: 1 !important;
+          transform: none !important;
+          transition: none !important;
+          max-height: none !important;
+          visibility: visible !important;
+        }
+        .vr-highlighted {
+          animation: vrpulse 2s infinite;
+        }
+        @keyframes vrpulse {
+          0%,100% { box-shadow:0 0 0 8px rgba(220,38,38,0.15),0 0 30px rgba(220,38,38,0.25); }
+          50% { box-shadow:0 0 0 12px rgba(220,38,38,0.08),0 0 40px rgba(220,38,38,0.35); }
+        }
+      `;
+      doc.head.appendChild(style);
+    }
+  } catch(e) {
+    // Cross-origin or timing issue — silently ignore
+  }
+}
+
+function decide(decision) {
+  if (!currentId) return;
+  state[currentId] = decision;
+  localStorage.setItem(SESSION, JSON.stringify(state));
+  updatePipStates();
+  show(currentId); // Refresh card to show new state
+  // Auto-advance to next pending
+  setTimeout(() => {
+    const nextPending = edits.find(e => !state[e.id] || state[e.id] === 'pending');
+    if (nextPending && nextPending.id !== currentId) {
+      // Don't auto-advance, let human click Next
+    }
+  }, 300);
+}
+
+function go(dir) {
+  const idx = edits.findIndex(e => e.id === currentId);
+  let next = idx + dir;
+  if (next < 0) next = edits.length - 1;
+  if (next >= edits.length) next = 0;
+  show(edits[next].id);
+}
+
+function exportApprovals() {
+  const decisions = edits.map(e => ({
+    id: e.id,
+    category: e.category,
+    file: e.file,
+    line: e.line,
+    description: e.description,
+    decision: state[e.id] || 'pending'
+  }));
+
+  const output = {
+    title: MANIFEST.title,
+    jiraStory: MANIFEST.jiraStory || '',
+    exportedAt: new Date().toISOString(),
+    summary: {
+      total: edits.length,
+      approved: decisions.filter(d => d.decision === 'approved').length,
+      rejected: decisions.filter(d => d.decision === 'rejected').length,
+      pending: decisions.filter(d => d.decision === 'pending').length
+    },
+    decisions: decisions,
+    categories: MANIFEST.categories.map(c => ({
+      ...c,
+      approvedEdits: decisions.filter(d => d.category === c.id && d.decision === 'approved').map(d => d.id),
+      rejectedEdits: decisions.filter(d => d.category === c.id && d.decision === 'rejected').map(d => d.id)
+    }))
+  };
+
+  // Download as JSON
+  const blob = new Blob([JSON.stringify(output, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'approval-decisions.json';
+  a.click();
+  URL.revokeObjectURL(url);
+
+  // Also copy to clipboard
+  navigator.clipboard.writeText(JSON.stringify(output, null, 2)).catch(() => {});
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') go(1);
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') go(-1);
+  if (e.key === 'a' || e.key === 'A') decide('approved');
+  if (e.key === 'r' || e.key === 'R') decide('rejected');
+});
+
+// Sync scrolling between iframes
+let syncing = false;
+function setupSyncScroll() {
+  const ifA = document.getElementById('ifA');
+  const ifB = document.getElementById('ifB');
+  try {
+    const docA = ifA.contentDocument || ifA.contentWindow.document;
+    const docB = ifB.contentDocument || ifB.contentWindow.document;
+    const winA = ifA.contentWindow;
+    const winB = ifB.contentWindow;
+
+    winA.addEventListener('scroll', () => {
+      if (syncing) return;
+      syncing = true;
+      docB.documentElement.style.scrollBehavior = 'auto';
+      docB.documentElement.scrollTop = docA.documentElement.scrollTop;
+      requestAnimationFrame(() => { docB.documentElement.style.scrollBehavior = ''; syncing = false; });
+    });
+
+    winB.addEventListener('scroll', () => {
+      if (syncing) return;
+      syncing = true;
+      docA.documentElement.style.scrollBehavior = 'auto';
+      docA.documentElement.scrollTop = docB.documentElement.scrollTop;
+      requestAnimationFrame(() => { docA.documentElement.style.scrollBehavior = ''; syncing = false; });
+    });
+  } catch(e) {}
+}
+
+// Init — wait for iframes to load, then sync
+const ifA = document.getElementById('ifA');
+const ifB = document.getElementById('ifB');
+let loaded = 0;
+function forceAllVisible(iframe) {
+  try {
+    const doc = iframe.contentDocument;
+    if (!doc) return;
+    const style = doc.createElement('style');
+    style.id = 'vr-force-visible';
+    style.textContent = `
+      .workshop-card, .phase-card, .why-card, .journey-step,
+      section, .how-card, .team-card, .cta-section {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+        max-height: none !important;
+        visibility: visible !important;
+      }
+      /* Force hidden panels visible for review — these are tab/phase panels with display:none */
+      .grade-panel {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+      }
+    `;
+    doc.head.appendChild(style);
+  } catch(e) {}
+}
+
+function onIframeLoad() {
+  loaded++;
+  forceAllVisible(document.getElementById('ifA'));
+  forceAllVisible(document.getElementById('ifB'));
+  if (loaded >= 2) {
+    setupSyncScroll();
+    if (edits.length) show(edits[0].id);
+  }
+}
+ifA.addEventListener('load', onIframeLoad);
+ifB.addEventListener('load', onIframeLoad);
+// Fallback in case load already fired
+setTimeout(() => { if (loaded < 2) { loaded = 2; setupSyncScroll(); if (edits.length) show(edits[0].id); } }, 2000);
+</script>
+</body>
+</html>

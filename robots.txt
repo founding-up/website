@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /portals/admin/
+
+Sitemap: https://foundingup.com/sitemap.xml

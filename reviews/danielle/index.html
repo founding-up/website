@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>founding_up — Identity &amp; Workforce Transformation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+/* ========== RESET & TOKENS ========== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --blue: #1A6B6B;
+  --blue-light: #237878;
+  --teal: #1A6B6B;
+  --teal-light: #2A9D8F;
+  --cyan: #00E5C8;
+  --cyan-light: #33ECCF;
+  --amber: #00E5C8;
+  --amber-light: #33ECCF;
+  --coral: #FF6F61;
+  --purple: #6A4C93;
+  --indigo: #3F37C9;
+  --white: #FFFFFF;
+  --cream: #F5FAFA;
+  --gray-50: #F5FAFA;
+  --gray-100: #F1F5F9;
+  --gray-200: #E2E8F0;
+  --gray-300: #CBD5E1;
+  --gray-400: #94A3B8;
+  --gray-500: #64748B;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1E293B;
+  --gray-900: #0F172A;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+  --shadow-xl: 0 20px 60px rgba(0,0,0,0.15);
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); color: var(--gray-800); line-height: 1.6; background: var(--white); -webkit-font-smoothing: antialiased; }
+
+/* ========== NAVIGATION ========== */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 18px 0;
+  transition: all 0.35s ease;
+  background: transparent;
+}
+nav.scrolled {
+  background: rgba(26,107,107,0.95);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0,229,200,0.15);
+  padding: 12px 0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+.nav-container {
+  max-width: 1200px; margin: 0 auto; padding: 0 32px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.logo {
+  font-family: var(--font-body); font-weight: 800; font-size: 1.4rem;
+  text-decoration: none; color: var(--blue); letter-spacing: -0.5px;
+}
+.logo span { color: var(--amber); }
+.nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
+.nav-links a {
+  text-decoration: none; color: var(--gray-600); font-size: 0.78rem;
+  font-weight: 700; transition: color 0.2s;
+  letter-spacing: 1.5px; text-transform: uppercase;
+}
+nav:not(.scrolled) .nav-links a { color: rgba(255,255,255,0.85); }
+nav:not(.scrolled) .nav-links a:hover { color: #fff; }
+nav:not(.scrolled) .logo { color: #fff; }
+.nav-links a:hover { color: var(--cyan); }
+nav.scrolled .nav-links a { color: rgba(255,255,255,0.85); }
+nav.scrolled .nav-links a:hover { color: var(--cyan); }
+nav.scrolled .logo { color: #fff; }
+nav.scrolled .hamburger span { background: #fff; }
+.nav-cta {
+  background: var(--amber) !important; color: var(--gray-900) !important;
+  padding: 10px 24px; border-radius: 100px; font-weight: 700;
+  font-size: 0.88rem; text-decoration: none; transition: all 0.2s;
+  letter-spacing: 0.2px; white-space: nowrap;
+}
+.nav-cta:hover { background: var(--cyan-light) !important; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,229,200,0.35); }
+.hamburger { display: none; flex-direction: column; cursor: pointer; gap: 5px; background: none; border: none; padding: 4px; }
+.hamburger span { width: 24px; height: 2px; background: var(--gray-800); transition: 0.3s; border-radius: 2px; }
+nav:not(.scrolled) .hamburger span { background: #fff; }
+
+/* ========== HERO ========== */
+.hero {
+  min-height: 100vh; display: flex; align-items: center;
+  background: #030808;
+  position: relative; overflow: hidden;
+  border-bottom: 2px solid rgba(0,229,200,0.4);
+}
+/* Smoky teal mist — very subtle over near-black */
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 55% 30%, rgba(0,229,200,0.04), transparent 70%),
+    radial-gradient(ellipse 50% 50% at 25% 65%, rgba(0,229,200,0.025), transparent 55%),
+    radial-gradient(ellipse 35% 35% at 80% 55%, rgba(26,107,107,0.04), transparent 50%),
+    radial-gradient(ellipse 80% 25% at 50% 95%, rgba(0,229,200,0.02), transparent 60%);
+}
+.hero::after {
+  content: ''; position: absolute; inset: 0;
+  background:
+    linear-gradient(125deg, transparent 30%, rgba(0,229,200,0.015) 40%, rgba(0,229,200,0.03) 42%, rgba(0,229,200,0.015) 44%, transparent 55%),
+    linear-gradient(200deg, transparent 50%, rgba(10,54,54,0.08) 65%, rgba(10,54,54,0.04) 75%, transparent 85%);
+  pointer-events: none;
+}
+.hero-grid-bg {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,229,200,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,200,0.015) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, rgba(0,0,0,0.4), transparent);
+}
+.hero-grid-bg::before {
+  content: ''; position: absolute;
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--cyan); opacity: 0.15;
+  top: 25%; right: 18%;
+  box-shadow:
+    -120px 80px 0 rgba(0,229,200,0.08),
+    200px -60px 0 rgba(0,229,200,0.06),
+    -300px -40px 0 rgba(0,229,200,0.07),
+    80px 200px 0 rgba(0,229,200,0.1),
+    -200px 160px 0 rgba(0,229,200,0.05);
+  animation: floatDots 12s ease-in-out infinite;
+}
+@keyframes floatDots {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  33% { transform: translateY(-8px) translateX(4px); }
+  66% { transform: translateY(6px) translateX(-3px); }
+}
+.hero-grid-bg::after {
+  content: ''; position: absolute;
+  width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,229,200,0.03) 0%, rgba(0,229,200,0.01) 40%, transparent 70%);
+  top: -10%; right: -5%;
+  animation: glowPulse 8s ease-in-out infinite;
+}
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
+}
+.hero-content {
+  max-width: 800px; margin: 0 auto; padding: 0 32px;
+  position: relative; z-index: 10;
+  text-align: center;
+}
+.hero-text { max-width: 800px; margin: 0 auto; }
+.hero h1 {
+  font-family: var(--font-body); font-size: clamp(2.6rem, 5vw, 4.2rem);
+  font-weight: 800; line-height: 1.08; color: #fff;
+  margin-bottom: 28px; letter-spacing: -0.5px;
+  text-transform: uppercase;
+}
+.hero h1 em {
+  font-style: normal;
+  background: linear-gradient(90deg, #00E5C8, #1A6B6B, #FF6F61, #6A4C93, #00E5C8);
+  background-size: 300% 100%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  animation: heroGradientFlow 6s ease-in-out infinite;
+}
+.hero-build {
+  background: linear-gradient(90deg, #FF6F61, #B85A8A, #6A4C93, #FF6F61);
+  background-size: 300% 100%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: heroGradientFlow 6s ease-in-out infinite;
+}
+.hero-subtitle {
+  background: linear-gradient(135deg, var(--cyan) 0%, #66F2E0 50%, #99F5E8 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+@keyframes heroGradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.hero p {
+  font-size: 1.1rem; color: rgba(255,255,255,0.6); line-height: 1.8;
+  margin-bottom: 40px; letter-spacing: 0.2px;
+}
+.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+.btn-primary {
+  background: var(--cyan); color: var(--gray-900);
+  padding: 16px 36px; border-radius: 100px;
+  font-size: 0.82rem; font-weight: 800; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: all 0.25s; border: none; cursor: pointer;
+  box-shadow: 0 4px 24px rgba(0,229,200,0.35), 0 0 60px rgba(0,229,200,0.1);
+  letter-spacing: 1.5px; text-transform: uppercase;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 36px rgba(0,229,200,0.5), 0 0 80px rgba(0,229,200,0.15); background: var(--cyan-light); }
+.btn-secondary {
+  background: transparent; color: #fff;
+  padding: 16px 36px; border-radius: 100px;
+  font-size: 0.82rem; font-weight: 700; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 2px solid rgba(0,229,200,0.4);
+  transition: all 0.25s; cursor: pointer;
+  letter-spacing: 1.5px; text-transform: uppercase;
+}
+.btn-secondary:hover { border-color: var(--cyan); background: rgba(0,229,200,0.08); color: var(--cyan); }
+
+
+/* ========== STATS BAR ========== */
+.stats-bar {
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-200);
+  padding: 48px 32px;
+}
+.stats-container {
+  max-width: 1000px; margin: 0 auto;
+  display: flex; justify-content: center; gap: 80px;
+}
+.stat { text-align: center; }
+.stat-number {
+  font-family: var(--font-body); font-size: 2.5rem; font-weight: 700;
+  color: var(--blue); letter-spacing: -1px;
+}
+.stat-label { font-size: 0.82rem; color: var(--gray-500); margin-top: 4px; font-weight: 500; }
+
+/* ========== SECTION SHARED ========== */
+.section-container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+.section-header { text-align: center; margin-bottom: 56px; }
+.section-header h2 {
+  font-family: var(--font-body); font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 800; color: var(--gray-900); margin-bottom: 16px;
+  letter-spacing: 1px; text-transform: uppercase;
+}
+.section-header p { font-size: 1.05rem; color: var(--gray-500); max-width: 600px; margin: 0 auto; line-height: 1.7; }
+
+/* ========== CORE DIMENSIONS (5-skill grid) ========== */
+
+/* ========== HOW IT WORKS ========== */
+.how-section { padding: 96px 0; background: var(--white); }
+/* Continuum graphic */
+.continuum-wrapper {
+  max-width: 1100px; margin: 0 auto 48px; position: relative;
+}
+.continuum-svg { width: 100%; height: auto; display: block; }
+/* Phase cards grid */
+.journey-phases {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+}
+.phase-card {
+  display: flex; flex-direction: column;
+  text-align: center;
+}
+.phase-body {
+  background: var(--gray-50); border-radius: var(--radius-lg);
+  padding: 28px 24px; border: 1px solid var(--gray-200);
+  transition: all 0.3s ease; flex: 1;
+  display: flex; flex-direction: column;
+}
+.phase-body:hover { box-shadow: var(--shadow-md); border-color: var(--gray-300); transform: translateY(-4px); }
+.phase-stage {
+  font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1.2px; margin-bottom: 4px;
+}
+.phase-dimension {
+  font-size: 0.68rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.8px; color: var(--gray-400); margin-bottom: 10px;
+}
+.phase-evidence {
+  display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 12px;
+}
+.evidence-tag {
+  font-size: 0.68rem; font-weight: 600; padding: 3px 10px;
+  border-radius: 100px; background: rgba(26,107,107,0.06);
+  color: var(--teal); border: 1px solid rgba(26,107,107,0.12);
+}
+.evidence-tag.highlight {
+  background: rgba(0,229,200,0.1); border-color: rgba(0,229,200,0.25);
+  color: var(--cyan-dark); font-weight: 700;
+}
+.phase-card:nth-child(1) .phase-stage { color: var(--amber); }
+.phase-card:nth-child(2) .phase-stage { color: var(--teal); }
+.phase-card:nth-child(3) .phase-stage { color: var(--coral); }
+.phase-card:nth-child(4) .phase-stage { color: var(--purple); }
+.phase-body h3 {
+  font-family: var(--font-body); font-size: 1.1rem; font-weight: 600;
+  color: var(--gray-900); margin-bottom: 10px; line-height: 1.3;
+}
+.phase-body p { font-size: 0.85rem; color: var(--gray-500); line-height: 1.65; flex: 1; }
+.phase-target {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  margin-top: 16px; font-size: 0.78rem; font-weight: 600;
+  padding: 6px 14px; border-radius: 100px;
+  background: rgba(26,107,107,0.08); color: var(--teal);
+}
+
+.case-label {
+  font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1.5px; color: var(--cyan);
+}
+
+/* ========== CURRICULUM SECTION (Alpha-style tabs + cards) ========== */
+.curriculum-section {
+  padding: 96px 0;
+  background: linear-gradient(180deg, var(--gray-50) 0%, var(--cream) 100%);
+}
+.grade-tabs {
+  display: flex; justify-content: center; gap: 8px;
+  margin-bottom: 48px; flex-wrap: wrap;
+}
+.grade-tab {
+  padding: 12px 28px; border-radius: 100px;
+  font-size: 0.88rem; font-weight: 600;
+  border: 1.5px solid var(--gray-300); background: var(--white);
+  color: var(--gray-600); cursor: pointer;
+  transition: all 0.25s ease; letter-spacing: 0.2px;
+}
+.grade-tab:hover { border-color: var(--blue); color: var(--blue); }
+.grade-tab.active {
+  background: var(--blue); border-color: var(--blue);
+  color: #fff; box-shadow: 0 4px 16px rgba(26,107,107,0.3);
+}
+.grade-panel { display: none; }
+.grade-panel.active { display: block; animation: fadeUp 0.4s ease; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+.curriculum-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+.workshop-card {
+  background: var(--white); border-radius: var(--radius-lg);
+  overflow: hidden; border: 1px solid var(--gray-200);
+  transition: all 0.3s ease; cursor: default;
+}
+.workshop-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.workshop-thumb {
+  height: 160px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.workshop-thumb .thumb-icon {
+  margin-bottom: 8px; color: rgba(255,255,255,0.9);
+}
+.workshop-thumb .thumb-icon svg { width: 36px; height: 36px; stroke-width: 1.5; }
+.workshop-thumb .thumb-label {
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1.5px; color: rgba(255,255,255,0.7);
+}
+.workshop-card.passion-theme .workshop-thumb { background: linear-gradient(135deg, #00C9B0, #00A896); }
+.workshop-card.vocation-theme .workshop-thumb { background: linear-gradient(135deg, #1F7A7A, #14B8A6); }
+.workshop-card.mission-theme .workshop-thumb { background: linear-gradient(135deg, #FF6F61, #E11D48); }
+.workshop-card.profession-theme .workshop-thumb { background: linear-gradient(135deg, #6A4C93, #8B5CF6); }
+.workshop-card.identity-theme .workshop-thumb { background: linear-gradient(135deg, #1A6B6B, #2DD4BF); }
+
+.workshop-body { padding: 24px; }
+.workshop-tag {
+  display: inline-block; padding: 3px 10px; border-radius: 100px;
+  font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.8px; margin-bottom: 10px;
+}
+.passion-theme .workshop-tag { background: rgba(0,229,200,0.1); color: #0D9488; }
+.vocation-theme .workshop-tag { background: rgba(26,107,107,0.1); color: var(--teal); }
+.mission-theme .workshop-tag { background: rgba(255,111,97,0.1); color: #E11D48; }
+.profession-theme .workshop-tag { background: rgba(106,76,147,0.1); color: var(--purple); }
+.identity-theme .workshop-tag { background: rgba(26,107,107,0.1); color: var(--blue); }
+
+.workshop-body h4 {
+  font-family: var(--font-body); font-size: 1.1rem; font-weight: 600;
+  color: var(--gray-900); margin-bottom: 8px;
+}
+.workshop-body p { font-size: 0.85rem; color: var(--gray-500); line-height: 1.6; }
+.workshop-meta {
+  display: flex; gap: 16px; margin-top: 14px;
+  padding-top: 14px; border-top: 1px solid var(--gray-100);
+}
+.workshop-meta span {
+  font-size: 0.75rem; color: var(--gray-400); font-weight: 500;
+  display: flex; align-items: center; gap: 5px;
+}
+.workshop-meta span svg { width: 13px; height: 13px; stroke-width: 2; flex-shrink: 0; }
+
+
+/* ========== WHY IT WORKS ========== */
+.why-section {
+  padding: 96px 0;
+  background: linear-gradient(165deg, #0E4444 0%, #072B2B 50%, #041E1E 100%);
+  color: #fff; position: relative; overflow: hidden;
+  border-top: 5px solid var(--cyan); border-bottom: 5px solid var(--cyan);
+}
+.why-section::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 50% 50% at 20% 30%, rgba(0,229,200,0.08), transparent),
+    radial-gradient(ellipse 40% 40% at 80% 70%, rgba(0,229,200,0.06), transparent);
+  pointer-events: none;
+}
+.why-section .section-header h2 { color: #fff; }
+.why-section .section-header p { color: rgba(255,255,255,0.55); }
+.why-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 24px; max-width: 1100px; margin: 0 auto;
+}
+.why-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-lg); padding: 36px 28px;
+  backdrop-filter: blur(12px); transition: all 0.3s;
+}
+.why-card:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.15); transform: translateY(-4px); }
+.why-icon {
+  width: 48px; height: 48px; border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px;
+  background: rgba(0,229,200,0.12);
+  color: var(--cyan);
+}
+.why-icon svg { width: 22px; height: 22px; stroke-width: 1.8; }
+.why-label {
+  font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1.5px; color: var(--cyan); margin-bottom: 6px; opacity: 0.8;
+}
+.why-card h3 { font-family: var(--font-body); font-size: 1rem; font-weight: 700; margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
+.why-card p { font-size: 0.88rem; color: rgba(255,255,255,0.55); line-height: 1.65; }
+
+/* (Mentors section removed — mentor expertise is now embedded in Cleo AI) */
+
+/* ========== LEADERSHIP ========== */
+.leadership-section {
+  padding: 96px 0; background: var(--cream); position: relative; overflow: hidden;
+}
+.leadership-section .section-header h2 { color: var(--gray-900); }
+.leadership-section .section-header p { color: var(--gray-500); }
+.leadership-label {
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--teal); margin-bottom: 32px;
+  text-align: center;
+}
+.leadership-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px;
+  max-width: 1100px; margin: 0 auto 56px;
+}
+.leader-card {
+  background: var(--white); border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg); padding: 32px 20px;
+  text-align: center; transition: all 0.3s;
+}
+.leader-card:hover {
+  border-color: var(--teal); box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+}
+.leader-avatar {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal), var(--cyan));
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px; font-size: 1.4rem; font-weight: 700;
+  color: #fff; letter-spacing: 1px;
+}
+.leader-card h3 {
+  font-family: var(--font-body); font-size: 0.9rem; font-weight: 700;
+  color: var(--gray-900); margin-bottom: 4px;
+}
+.leader-title {
+  font-size: 0.75rem; font-weight: 600; color: var(--teal);
+  text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;
+}
+.leader-bio {
+  font-size: 0.78rem; color: var(--gray-500); line-height: 1.6;
+}
+.advisors-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+  max-width: 1000px; margin: 0 auto;
+}
+.advisor-card {
+  background: var(--white); border: 1px solid var(--gray-200);
+  border-radius: var(--radius-md); padding: 24px 16px;
+  text-align: center; transition: all 0.3s;
+}
+.advisor-card:hover {
+  border-color: var(--teal-light); box-shadow: var(--shadow-sm);
+}
+.advisor-card h4 {
+  font-size: 0.82rem; font-weight: 700; color: var(--gray-800); margin-bottom: 4px;
+}
+.advisor-card p {
+  font-size: 0.72rem; color: var(--gray-500); line-height: 1.5;
+}
+
+/* ========== CTA ========== */
+.cta-section {
+  padding: 96px 0; background: var(--cream); text-align: center;
+}
+.cta-box {
+  max-width: 700px; margin: 0 auto;
+  background: var(--white); border-radius: var(--radius-xl);
+  padding: 64px 48px; border: 1px solid var(--gray-200);
+  box-shadow: var(--shadow-lg);
+}
+.cta-box h2 {
+  font-family: var(--font-body); font-size: 1.8rem; font-weight: 800;
+  color: var(--gray-900); margin-bottom: 16px;
+  letter-spacing: 1px; text-transform: uppercase;
+}
+.cta-box p { font-size: 1.05rem; color: var(--gray-500); margin-bottom: 32px; line-height: 1.7; }
+
+/* ========== FOOTER ========== */
+footer {
+  background: #041E1E; color: rgba(255,255,255,0.5);
+  padding: 64px 0 32px;
+}
+.footer-container {
+  max-width: 1200px; margin: 0 auto; padding: 0 32px;
+}
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px; margin-bottom: 48px;
+}
+.footer-brand .logo { color: #fff; font-size: 1.3rem; display: inline-block; margin-bottom: 12px; }
+.footer-brand p { font-size: 0.85rem; line-height: 1.7; max-width: 280px; }
+.footer-col h4 {
+  color: #fff; font-size: 0.82rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 16px;
+}
+.footer-col a {
+  display: block; color: rgba(255,255,255,0.45);
+  text-decoration: none; font-size: 0.88rem;
+  margin-bottom: 10px; transition: color 0.2s;
+}
+.footer-col a:hover { color: var(--cyan); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 24px; display: flex; justify-content: space-between;
+  font-size: 0.8rem;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1024px) {
+  .hero-text { max-width: 100%; }
+  .hero p { margin-left: auto; margin-right: auto; }
+  .hero-actions { justify-content: center; }
+  .journey-phases { grid-template-columns: repeat(2, 1fr); }
+  .continuum-wrapper { margin-bottom: 32px; overflow-x: auto; }
+  .continuum-svg { min-width: 700px; }
+  .why-grid { grid-template-columns: repeat(2, 1fr); }
+  .leadership-grid { grid-template-columns: repeat(3, 1fr); }
+  .advisors-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-links.open {
+    display: flex; flex-direction: column;
+    position: absolute; top: 100%; left: 0; right: 0;
+    background: var(--white); padding: 24px 32px; gap: 16px;
+    border-bottom: 1px solid var(--gray-200);
+    box-shadow: var(--shadow-md);
+  }
+  .nav-links.open a { color: var(--gray-600) !important; }
+  .nav-links.open a:hover { color: var(--cyan) !important; }
+  .nav-links.open .nav-cta { color: var(--gray-900) !important; }
+  .hamburger { display: flex; }
+  .hero h1 { font-size: 1.8rem; letter-spacing: 0.5px; }
+  .impact-stats { grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 32px; }
+  .impact-number { font-size: 1.5rem; }
+  .stats-container { flex-direction: column; gap: 24px; align-items: center; }
+  .journey-phases { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+  .continuum-svg { min-width: 600px; }
+  .grade-tabs { gap: 6px; }
+  .grade-tab { padding: 10px 18px; font-size: 0.8rem; }
+  .curriculum-grid { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: 1fr; }
+  .leadership-grid { grid-template-columns: repeat(2, 1fr); }
+  .advisors-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+  .footer-bottom { flex-direction: column; gap: 8px; }
+  .cta-box { padding: 40px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ========== NAVIGATION ========== -->
+<nav id="mainNav">
+  <div class="nav-container">
+    <a href="#" class="logo">founding<span>_</span>up</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#journey">Journey</a></li>
+      <li><a href="#curriculum">Activities</a></li>
+      <li><a href="#why">How It Works</a></li>
+      <li><a href="#leadership">Team</a></li>
+      <li><a href="login.html" style="opacity:0.7;">Demo</a></li>
+      <li><a href="demo.html" class="nav-cta">Get Started</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <h1>Discover Who <em>You</em> Are.<br><span class="hero-build">Build</span> <span class="hero-subtitle">What Matters.</span></h1>
+      <p>Start with who you are — your interests, values, and strengths. Then build the skills, credentials, and career clarity that turn identity into impact.</p>
+      <div class="hero-actions">
+        <a href="#curriculum" class="btn-primary">Explore Activities &#8595;</a>
+        <a href="#journey" class="btn-secondary">Learn More</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== HOW IT WORKS (Journey) ========== -->
+<section class="how-section" id="journey">
+  <div class="section-container">
+    <div class="section-header">
+      <h2>From Who You Are to What You Become</h2>
+      <p>Identity isn't something you find — it becomes visible when you start doing things and paying attention to what you're already capable of. Through four developmental phases, students learn to recognize their own extraordinary capabilities, test where those capabilities create impact, and build a clear direction from that foundation. The program develops identity clarity — knowing your direction and being able to act on it — while building the workforce readiness that connects that clarity to career outcomes.</p>
+    </div>
+    <!-- Venn-Spider: Identity ∩ Workforce -->
+    <div class="continuum-wrapper">
+      <svg class="continuum-svg" viewBox="0 0 1100 520" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="idFill" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#00E5C8" stop-opacity="0.06"/>
+            <stop offset="100%" stop-color="#1A6B6B" stop-opacity="0.01"/>
+          </radialGradient>
+          <radialGradient id="wfFill" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ff6f61" stop-opacity="0.06"/>
+            <stop offset="100%" stop-color="#6a4c93" stop-opacity="0.01"/>
+          </radialGradient>
+          <radialGradient id="interFill" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#E8963F" stop-opacity="0.18"/>
+            <stop offset="50%" stop-color="#E8963F" stop-opacity="0.08"/>
+            <stop offset="100%" stop-color="#E8963F" stop-opacity="0.01"/>
+          </radialGradient>
+        </defs>
+
+        <!-- ══════ VENN CIRCLES ══════ -->
+        <!-- Identity circle — larger overlap (circles closer together) -->
+        <circle cx="370" cy="260" r="230" fill="url(#idFill)" stroke="#00E5C8" stroke-width="1.5" stroke-opacity="0.2"/>
+        <!-- Workforce circle -->
+        <circle cx="730" cy="260" r="230" fill="url(#wfFill)" stroke="#ff6f61" stroke-width="1.5" stroke-opacity="0.2"/>
+
+        <!-- ══════ TOP LABELS ══════ -->
+        <text x="240" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#00E5C8" font-family="system-ui" letter-spacing="2.5">IDENTITY</text>
+        <text x="240" y="38" text-anchor="middle" font-size="9" font-weight="500" fill="#94a3b8" font-family="system-ui">The capabilities you already have</text>
+        <text x="860" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#ff6f61" font-family="system-ui" letter-spacing="2.5">WORKFORCE</text>
+        <text x="860" y="38" text-anchor="middle" font-size="9" font-weight="500" fill="#94a3b8" font-family="system-ui">What you become — ready to lead</text>
+
+        <!-- ══════ IDENTITY SIDE (Explorer + Investigator) ══════ -->
+
+        <!-- Spider web rings around identity center -->
+        <circle cx="290" cy="260" r="55" fill="none" stroke="#00E5C8" stroke-width="0.5" stroke-opacity="0.12" stroke-dasharray="3,3"/>
+        <circle cx="290" cy="260" r="110" fill="none" stroke="#00E5C8" stroke-width="0.5" stroke-opacity="0.08" stroke-dasharray="3,3"/>
+
+        <!-- Identity spokes — what Explorer/Investigator uncover -->
+        <!-- Interests -->
+        <line x1="290" y1="260" x2="165" y2="140" stroke="#00E5C8" stroke-width="1.2" stroke-opacity="0.25"/>
+        <circle cx="165" cy="140" r="4.5" fill="#00E5C8"/>
+        <text x="130" y="130" text-anchor="middle" font-size="10.5" font-weight="600" fill="#00C9B0" font-family="system-ui">Interests</text>
+
+        <!-- Values -->
+        <line x1="290" y1="260" x2="130" y2="240" stroke="#00E5C8" stroke-width="1.2" stroke-opacity="0.25"/>
+        <circle cx="130" cy="240" r="4.5" fill="#00E5C8"/>
+        <text x="88" y="244" text-anchor="middle" font-size="10.5" font-weight="600" fill="#00C9B0" font-family="system-ui">Values</text>
+
+        <!-- Purpose -->
+        <line x1="290" y1="260" x2="130" y2="310" stroke="#00E5C8" stroke-width="1.2" stroke-opacity="0.25"/>
+        <circle cx="130" cy="310" r="4.5" fill="#00E5C8"/>
+        <text x="88" y="314" text-anchor="middle" font-size="10.5" font-weight="600" fill="#00C9B0" font-family="system-ui">Purpose</text>
+
+        <!-- Strengths -->
+        <line x1="290" y1="260" x2="165" y2="385" stroke="#00E5C8" stroke-width="1.2" stroke-opacity="0.25"/>
+        <circle cx="165" cy="385" r="4.5" fill="#00E5C8"/>
+        <text x="130" y="400" text-anchor="middle" font-size="10.5" font-weight="600" fill="#00C9B0" font-family="system-ui">Strengths</text>
+
+        <!-- Self-Awareness -->
+        <line x1="290" y1="260" x2="240" y2="110" stroke="#1A6B6B" stroke-width="1.2" stroke-opacity="0.25"/>
+        <circle cx="240" cy="110" r="4.5" fill="#1A6B6B"/>
+        <text x="240" y="96" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1f7a7a" font-family="system-ui">Self-Awareness</text>
+
+        <!-- Reflection -->
+        <line x1="290" y1="260" x2="240" y2="415" stroke="#1A6B6B" stroke-width="1.2" stroke-opacity="0.25"/>
+        <circle cx="240" cy="415" r="4.5" fill="#1A6B6B"/>
+        <text x="240" y="432" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1f7a7a" font-family="system-ui">Reflection</text>
+
+        <!-- Spider filled area -->
+        <polygon points="165,140 240,110 345,170 360,260 345,350 240,415 165,385 130,310 130,240" fill="#00E5C8" fill-opacity="0.05" stroke="#00E5C8" stroke-width="1" stroke-opacity="0.15"/>
+
+        <!-- Explorer center node -->
+        <circle cx="290" cy="260" r="11" fill="#00E5C8"/>
+        <text x="290" y="264" text-anchor="middle" font-size="8" font-weight="800" fill="#fff" font-family="system-ui">E</text>
+        <text x="290" y="283" text-anchor="middle" font-size="10" font-weight="700" fill="#00C9B0" font-family="system-ui">Explorer</text>
+
+        <!-- Investigator node (between Explorer and intersection) -->
+        <circle cx="380" cy="210" r="9" fill="#1A6B6B"/>
+        <text x="380" y="214" text-anchor="middle" font-size="7" font-weight="800" fill="#fff" font-family="system-ui">I</text>
+        <text x="380" y="198" text-anchor="middle" font-size="9" font-weight="600" fill="#1f7a7a" font-family="system-ui">Investigator</text>
+
+        <!-- ══════ WORKFORCE SIDE (Practitioner + Professional) ══════ -->
+
+        <!-- Spider web rings around workforce center -->
+        <circle cx="810" cy="260" r="55" fill="none" stroke="#ff6f61" stroke-width="0.5" stroke-opacity="0.12" stroke-dasharray="3,3"/>
+        <circle cx="810" cy="260" r="110" fill="none" stroke="#ff6f61" stroke-width="0.5" stroke-opacity="0.08" stroke-dasharray="3,3"/>
+
+        <!-- Workforce spokes — what Practitioner/Professional connect to -->
+        <!-- Career Pathways -->
+        <line x1="810" y1="260" x2="935" y2="140" stroke="#ff6f61" stroke-width="1.2" stroke-opacity="0.25"/>
+        <circle cx="935" cy="140" r="4.5" fill="#ff6f61"/>
+        <text x="985" y="130" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ff6f61" font-family="system-ui">Career Pathways</text>
+
+        <!-- AI &amp; Automation -->
+        <line x1="810" y1="260" x2="970" y2="240" stroke="#ff6f61" stroke-width="1.2" stroke-opacity="0.25"/>
+        <circle cx="970" cy="240" r="4.5" fill="#ff6f61"/>
+        <text x="1025" y="244" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ff6f61" font-family="system-ui">AI &amp; Automation</text>
+
+        <!-- Salary Expectations -->
+        <line x1="810" y1="260" x2="970" y2="310" stroke="#6a4c93" stroke-width="1.2" stroke-opacity="0.25"/>
+        <circle cx="970" cy="310" r="4.5" fill="#6a4c93"/>
+        <text x="1035" y="314" text-anchor="middle" font-size="10.5" font-weight="600" fill="#6a4c93" font-family="system-ui">Salary Expectations</text>
+
+        <!-- Employer Investment -->
+        <line x1="810" y1="260" x2="935" y2="385" stroke="#6a4c93" stroke-width="1.2" stroke-opacity="0.25"/>
+        <circle cx="935" cy="385" r="4.5" fill="#6a4c93"/>
+        <text x="985" y="400" text-anchor="middle" font-size="10.5" font-weight="600" fill="#6a4c93" font-family="system-ui">Employer Investment</text>
+
+        <!-- Employer Alignment -->
+        <line x1="810" y1="260" x2="860" y2="110" stroke="#6a4c93" stroke-width="1.2" stroke-opacity="0.25"/>
+        <circle cx="860" cy="110" r="4.5" fill="#6a4c93"/>
+        <text x="860" y="96" text-anchor="middle" font-size="10.5" font-weight="600" fill="#6a4c93" font-family="system-ui">Employer Alignment</text>
+
+        <!-- Hire Readiness -->
+        <line x1="810" y1="260" x2="860" y2="415" stroke="#ff6f61" stroke-width="1.2" stroke-opacity="0.25"/>
+        <circle cx="860" cy="415" r="4.5" fill="#ff6f61"/>
+        <text x="860" y="432" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ff6f61" font-family="system-ui">Hire Readiness</text>
+
+        <!-- Spider filled area -->
+        <polygon points="935,140 860,110 755,170 740,260 755,350 860,415 935,385 970,310 970,240" fill="#ff6f61" fill-opacity="0.05" stroke="#ff6f61" stroke-width="1" stroke-opacity="0.15"/>
+
+        <!-- Professional center node -->
+        <circle cx="810" cy="260" r="11" fill="#6a4c93"/>
+        <text x="810" y="264" text-anchor="middle" font-size="8" font-weight="800" fill="#fff" font-family="system-ui">P</text>
+        <text x="810" y="283" text-anchor="middle" font-size="10" font-weight="700" fill="#6a4c93" font-family="system-ui">Professional</text>
+
+        <!-- Practitioner node (between Professional and intersection) -->
+        <circle cx="720" cy="210" r="9" fill="#ff6f61"/>
+        <text x="720" y="214" text-anchor="middle" font-size="7" font-weight="800" fill="#fff" font-family="system-ui">P</text>
+        <text x="720" y="198" text-anchor="middle" font-size="9" font-weight="600" fill="#ff6f61" font-family="system-ui">Practitioner</text>
+
+        <!-- ══════ INTERSECTION: Where Identity Meets Workforce ══════ -->
+        <!-- Stronger overlap highlight -->
+        <ellipse cx="550" cy="260" rx="120" ry="185" fill="url(#interFill)"/>
+
+        <!-- Intersection center label -->
+        <rect x="478" y="245" rx="4" ry="4" width="144" height="30" fill="#E8963F" fill-opacity="0.12"/>
+        <text x="550" y="256" text-anchor="middle" font-size="8" font-weight="800" fill="#E8963F" font-family="system-ui" letter-spacing="2">WHERE IDENTITY</text>
+        <text x="550" y="270" text-anchor="middle" font-size="8" font-weight="800" fill="#E8963F" font-family="system-ui" letter-spacing="2">MEETS WORKFORCE</text>
+
+        <!-- The 6 real intersection data flows -->
+
+        <!-- 1. Verified Micro-Skills → Competency Match -->
+        <g>
+          <line x1="430" y1="140" x2="670" y2="140" stroke="#E8963F" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="4,3"/>
+          <circle cx="430" cy="140" r="4" fill="#1A6B6B"/>
+          <circle cx="670" cy="140" r="4" fill="#ff6f61"/>
+          <text x="425" y="130" text-anchor="end" font-size="8.5" font-weight="600" fill="#1f7a7a" font-family="system-ui">Verified Micro-Skills</text>
+          <text x="675" y="130" text-anchor="start" font-size="8.5" font-weight="600" fill="#ff6f61" font-family="system-ui">Competency Match</text>
+          <text x="550" y="134" text-anchor="middle" font-size="7.5" font-weight="700" fill="#E8963F" font-family="system-ui">skill-to-role alignment</text>
+        </g>
+
+        <!-- 2. Evidence Portfolio → Proven Capability -->
+        <g>
+          <line x1="440" y1="195" x2="660" y2="195" stroke="#E8963F" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="4,3"/>
+          <circle cx="440" cy="195" r="4" fill="#1A6B6B"/>
+          <circle cx="660" cy="195" r="4" fill="#ff6f61"/>
+          <text x="435" y="185" text-anchor="end" font-size="8.5" font-weight="600" fill="#1f7a7a" font-family="system-ui">Evidence Portfolio</text>
+          <text x="665" y="185" text-anchor="start" font-size="8.5" font-weight="600" fill="#ff6f61" font-family="system-ui">Proven Capability</text>
+          <text x="550" y="189" text-anchor="middle" font-size="7.5" font-weight="700" fill="#E8963F" font-family="system-ui">project-verified</text>
+        </g>
+
+        <!-- 3. Affirming Actions → Hire-Ready Signal -->
+        <g>
+          <line x1="450" y1="305" x2="650" y2="305" stroke="#E8963F" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="4,3"/>
+          <circle cx="450" cy="305" r="4" fill="#00E5C8"/>
+          <circle cx="650" cy="305" r="4" fill="#6a4c93"/>
+          <text x="445" y="320" text-anchor="end" font-size="8.5" font-weight="600" fill="#00C9B0" font-family="system-ui">Affirming Actions</text>
+          <text x="655" y="320" text-anchor="start" font-size="8.5" font-weight="600" fill="#6a4c93" font-family="system-ui">Hire-Ready Signal</text>
+          <text x="550" y="299" text-anchor="middle" font-size="7.5" font-weight="700" fill="#E8963F" font-family="system-ui">peer-validated</text>
+        </g>
+
+        <!-- 4. Skill Gaps → Employer-Funded Bootcamps -->
+        <g>
+          <line x1="450" y1="360" x2="650" y2="360" stroke="#E8963F" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="4,3"/>
+          <circle cx="450" cy="360" r="4" fill="#00E5C8"/>
+          <circle cx="650" cy="360" r="4" fill="#6a4c93"/>
+          <text x="445" y="375" text-anchor="end" font-size="8.5" font-weight="600" fill="#00C9B0" font-family="system-ui">Skill Gaps Identified</text>
+          <text x="655" y="375" text-anchor="start" font-size="8.5" font-weight="600" fill="#6a4c93" font-family="system-ui">Employer Invests</text>
+          <text x="550" y="354" text-anchor="middle" font-size="7.5" font-weight="700" fill="#E8963F" font-family="system-ui">closes demand gaps</text>
+        </g>
+
+        <!-- 5. Career Alignment → Signal Match -->
+        <g>
+          <line x1="440" y1="240" x2="660" y2="240" stroke="#E8963F" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="4,3"/>
+          <circle cx="440" cy="240" r="4" fill="#1A6B6B"/>
+          <circle cx="660" cy="240" r="4" fill="#ff6f61"/>
+          <text x="435" y="237" text-anchor="end" font-size="8.5" font-weight="600" fill="#1f7a7a" font-family="system-ui">Career Alignment</text>
+          <text x="665" y="237" text-anchor="start" font-size="8.5" font-weight="600" fill="#ff6f61" font-family="system-ui">Signal Match</text>
+        </g>
+
+        <!-- 6. Development Phase → Talent Pipeline -->
+        <g>
+          <line x1="450" y1="410" x2="650" y2="410" stroke="#E8963F" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="4,3"/>
+          <circle cx="450" cy="410" r="4" fill="#00E5C8"/>
+          <circle cx="650" cy="410" r="4" fill="#6a4c93"/>
+          <text x="445" y="425" text-anchor="end" font-size="8.5" font-weight="600" fill="#00C9B0" font-family="system-ui">Phase Progression</text>
+          <text x="655" y="425" text-anchor="start" font-size="8.5" font-weight="600" fill="#6a4c93" font-family="system-ui">Talent Pipeline</text>
+          <text x="550" y="404" text-anchor="middle" font-size="7.5" font-weight="700" fill="#E8963F" font-family="system-ui">opt-in consent</text>
+        </g>
+
+        <!-- Bottom context: The University sits at the center -->
+        <text x="550" y="490" text-anchor="middle" font-size="9" font-weight="600" fill="#94a3b8" font-family="system-ui">The university sits at the center — using the gap between what students produce and what employers demand</text>
+        <text x="550" y="505" text-anchor="middle" font-size="9" font-weight="600" fill="#94a3b8" font-family="system-ui">to direct investment, curriculum, and career outcomes.</text>
+
+      </svg>
+    </div>
+    <!-- Phase detail cards — each maps to a core dimension -->
+    <div class="journey-phases">
+      <div class="phase-card">
+        <div class="phase-body">
+          <div class="phase-stage">Explorer</div>
+          <div class="phase-dimension">Identity Discovery</div>
+          <h3>Recognize What You Already Do</h3>
+          <p>You already have extraordinary capabilities — skills you practice whether anyone asks you to or not, things you might not even realize are powerful. Through real-world action, reflection with Cleo, and guided activities, this phase helps you see those capabilities clearly and start testing where they create impact.</p>
+          <div class="phase-evidence">
+            <span class="evidence-tag">Surfacing what matters</span>
+            <span class="evidence-tag">Noticing patterns in behavior</span>
+          </div>
+        </div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-body">
+          <div class="phase-stage">Investigator</div>
+          <div class="phase-dimension">Affirming Actions</div>
+          <h3>Build Proof Through Action</h3>
+          <p>A guided dive deeper into emerging strengths through projects and peer validation. Develop the adaptive skills that let one person do what previously required an entire team — and start building a portfolio of real evidence that affirms who you are becoming.</p>
+          <div class="phase-evidence">
+            <span class="evidence-tag">Testing signals through action</span>
+            <span class="evidence-tag">Interpreting real-world feedback</span>
+          </div>
+        </div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-body">
+          <div class="phase-stage">Practitioner</div>
+          <div class="phase-dimension">Career Adaptability</div>
+          <h3>Connect Skills to Career</h3>
+          <p>Connect your skills to evolving career pathways shaped by AI and automation. Earn educator confirmations, complete real projects, and understand where your unique strengths create impact in a changing market — through a layered approach to skill development toward a career.</p>
+          <div class="phase-evidence">
+            <span class="evidence-tag">Building evidence of direction</span>
+            <span class="evidence-tag">Connecting to career pathways</span>
+          </div>
+        </div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-body">
+          <div class="phase-stage">Professional</div>
+          <div class="phase-dimension">Workforce Readiness</div>
+          <h3>Graduate Ready to Lead</h3>
+          <p>Where identity, skills, and career alignment converge into workforce readiness. Emerging career options showcase what you've built. Graduate with employer-verified awards, a proven skill portfolio, and the adaptability to lead — not just fill a role.</p>
+          <div class="phase-evidence">
+            <span class="evidence-tag">Converged on a clear direction</span>
+            <span class="evidence-tag">Integrated, validated evidence</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== CURRICULUM (Alpha-style tabs) ========== -->
+<section class="curriculum-section" id="curriculum">
+  <div class="section-container">
+    <div class="section-header">
+      <h2>Skilling &amp; Workforce Activities</h2>
+      <p>Hands-on experiences designed for a workforce in transformation — building adaptive identity, AI-era skills, and career clarity through guided exploration and real-world application.</p>
+    </div>
+
+    <div class="grade-tabs">
+      <button class="grade-tab active" data-grade="explorer">Explorer</button>
+      <button class="grade-tab" data-grade="investigator">Investigator</button>
+      <button class="grade-tab" data-grade="practitioner">Practitioner</button>
+      <button class="grade-tab" data-grade="professional">Professional</button>
+    </div>
+
+    <!-- EXPLORER PANEL -->
+    <div class="grade-panel active" id="panel-explorer">
+      <div class="curriculum-grid">
+        <div class="workshop-card passion-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="search"></i></span><span class="thumb-label">Discovery</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Identity Discovery</span>
+            <h4>Interest Mapping</h4>
+            <p>Guided conversations with Cleo AI to help you recognize the things you already do — the skills you practice whether anyone pays you to or not — and start seeing them as the strengths they are.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> 45 min</span><span><i data-lucide="message-circle"></i> AI-Guided</span></div>
+          </div>
+        </div>
+        <div class="workshop-card vocation-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="puzzle"></i></span><span class="thumb-label">Skilling</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Skill Awareness</span>
+            <h4>Hidden Strengths Finder</h4>
+            <p>Identify natural abilities through peer feedback and reflective exercises. Explore what's hard for others but easy for you.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> 30 min</span><span><i data-lucide="users-round"></i> Peer Activity</span></div>
+          </div>
+        </div>
+        <div class="workshop-card mission-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="trending-up"></i></span><span class="thumb-label">Career</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Career Awareness</span>
+            <h4>What Problems Can You Solve?</h4>
+            <p>Talk to people working on real problems. Explore where different capabilities create impact. Reflect on which problems energize you — and what that reveals about your strengths.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> 30 min + action</span><span><i data-lucide="pen-line"></i> Action + Reflection</span></div>
+          </div>
+        </div>
+        <div class="workshop-card profession-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="bot"></i></span><span class="thumb-label">Workforce</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Workforce Exploration</span>
+            <h4>Career Universe</h4>
+            <p>Explore career pathways shaped by AI and automation. See how roles are evolving and where adaptive skills create new opportunities.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> 35 min</span><span><i data-lucide="bar-chart-3"></i> Data-Driven</span></div>
+          </div>
+        </div>
+        <div class="workshop-card identity-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="palette"></i></span><span class="thumb-label">Integration</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Identity Canvas</span>
+            <h4>My Identity Map</h4>
+            <p>Create your initial identity visualization — a living canvas that maps your interests, strengths, career alignment, and adaptability into one unified picture.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> 40 min</span><span><i data-lucide="target"></i> Interactive</span></div>
+          </div>
+        </div>
+        <div class="workshop-card passion-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="footprints"></i></span><span class="thumb-label">Real-World</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Real-World Action</span>
+            <h4>First Step Challenge</h4>
+            <p>Take a low-stakes real-world action — have a conversation with someone in a field that interests you, attend an event, or try something new. Then reflect on what you learned about yourself from the experience.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> Varies</span><span><i data-lucide="map-pin"></i> Off-Platform</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INVESTIGATOR PANEL -->
+    <div class="grade-panel" id="panel-investigator">
+      <div class="curriculum-grid">
+        <div class="workshop-card passion-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="search"></i></span><span class="thumb-label">Discovery</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Identity Validation</span>
+            <h4>Interest Patterns</h4>
+            <p>Review your experiences to identify consistent themes. Which activities drew you back over time? Which were fleeting? Patterns in your behavior show you what you're already building toward.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> 35 min</span><span><i data-lucide="bar-chart-3"></i> Analytics</span></div>
+          </div>
+        </div>
+        <div class="workshop-card vocation-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="wrench"></i></span><span class="thumb-label">Skilling</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Skill Building</span>
+            <h4>Project Lab</h4>
+            <p>Build portfolio projects that test your emerging skills in real contexts. Create tangible evidence of what you can do — and learn what that evidence tells you about your direction.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> 90 min</span><span><i data-lucide="laptop"></i> Project</span></div>
+          </div>
+        </div>
+        <div class="workshop-card mission-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="microscope"></i></span><span class="thumb-label">Career</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Career Pattern Recognition</span>
+            <h4>Industry Spotter</h4>
+            <p>Research how AI is reshaping industries. Explore which career pathways are growing, which are being automated, and where adaptable people thrive.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> 45 min</span><span><i data-lucide="book-open"></i> Research</span></div>
+          </div>
+        </div>
+        <div class="workshop-card profession-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="bot"></i></span><span class="thumb-label">Workforce</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Workforce Intelligence</span>
+            <h4>Industry Deep Dive</h4>
+            <p>Select 2-3 career directions and research them thoroughly — how AI tools are used, what skills are in demand, and how roles are evolving.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> 50 min</span><span><i data-lucide="bar-chart-3"></i> Data-Driven</span></div>
+          </div>
+        </div>
+        <div class="workshop-card identity-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="refresh-cw"></i></span><span class="thumb-label">Integration</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Progress Check-In</span>
+            <h4>Identity Evolution</h4>
+            <p>Compare your current identity canvas with your Explorer version. Celebrate growth, acknowledge shifts, and set intentional goals for continued development.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> 30 min</span><span><i data-lucide="trending-up"></i> Progress</span></div>
+          </div>
+        </div>
+        <div class="workshop-card vocation-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="handshake"></i></span><span class="thumb-label">Skilling</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Peer Validation</span>
+            <h4>Skill Swap</h4>
+            <p>Partner with peers to validate each other's strengths. Teach someone your skill while learning theirs — building confidence through contribution.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> 45 min</span><span><i data-lucide="users-round"></i> Collaborative</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRACTITIONER PANEL -->
+    <div class="grade-panel" id="panel-practitioner">
+      <div class="curriculum-grid">
+        <div class="workshop-card vocation-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="trophy"></i></span><span class="thumb-label">Skilling</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Skill Mastery</span>
+            <h4>Portfolio Builder</h4>
+            <p>Create employer-ready project artifacts that demonstrate validated competencies. Earn educator confirmations and build real-world credibility.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> 120 min</span><span><i data-lucide="briefcase"></i> Portfolio</span></div>
+          </div>
+        </div>
+        <div class="workshop-card mission-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="rocket"></i></span><span class="thumb-label">Career</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Applied Career Design</span>
+            <h4>Impact Project</h4>
+            <p>Design and prototype a solution to a real-world problem. Apply your skills to create measurable outcomes aligned with your career direction.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> Multi-week</span><span><i data-lucide="wrench"></i> Applied</span></div>
+          </div>
+        </div>
+        <div class="workshop-card profession-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="users"></i></span><span class="thumb-label">Workforce</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Workforce Testing</span>
+            <h4>Industry Mentorship</h4>
+            <p>Connect with professionals through the Futures Workforce Portal. Shadow, interview, and learn what a career actually looks like day-to-day.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> Ongoing</span><span><i data-lucide="users"></i> Mentorship</span></div>
+          </div>
+        </div>
+        <div class="workshop-card passion-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="target"></i></span><span class="thumb-label">Discovery</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Identity Alignment</span>
+            <h4>Theme Synthesis</h4>
+            <p>Analyze your identity data to distill core themes. Identify the thread connecting your interests and translate it into career-ready language.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> 40 min</span><span><i data-lucide="brain"></i> Analytical</span></div>
+          </div>
+        </div>
+        <div class="workshop-card identity-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="hexagon"></i></span><span class="thumb-label">Integration</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Dimension Alignment</span>
+            <h4>Convergence Check</h4>
+            <p>Assess how well your identity dimensions reinforce each other. Identify gaps and create targeted action plans to strengthen alignment.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> 45 min</span><span><i data-lucide="bar-chart-3"></i> Strategic</span></div>
+          </div>
+        </div>
+        <div class="workshop-card vocation-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="clipboard-list"></i></span><span class="thumb-label">Skilling</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Skills Gap</span>
+            <h4>Market Match Analysis</h4>
+            <p>Compare your validated skills against evolving workforce demand. Identify high-value adaptive skills to develop and areas being automated.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> 35 min</span><span><i data-lucide="bar-chart-3"></i> Data-Driven</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFESSIONAL PANEL -->
+    <div class="grade-panel" id="panel-professional">
+      <div class="curriculum-grid">
+        <div class="workshop-card identity-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="sparkles"></i></span><span class="thumb-label">Integration</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Identity Integration</span>
+            <h4>Final Identity Presentation</h4>
+            <p>Present your identity journey to peers, educators, and mentors. Demonstrate how your discovery, skills, career alignment, and workforce readiness have converged.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> 60 min</span><span><i data-lucide="mic"></i> Presentation</span></div>
+          </div>
+        </div>
+        <div class="workshop-card profession-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="school"></i></span><span class="thumb-label">Workforce</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Workforce Launch</span>
+            <h4>College &amp; Career Launch</h4>
+            <p>Map your post-graduation pathway with clarity and confidence. Align college major selection or career entry with the direction you've built and validated through real-world experience.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> 50 min</span><span><i data-lucide="graduation-cap"></i> Planning</span></div>
+          </div>
+        </div>
+        <div class="workshop-card vocation-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="gem"></i></span><span class="thumb-label">Skilling</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Employer Validation</span>
+            <h4>Internship Showcase</h4>
+            <p>Complete an internship matched to your demonstrated strengths and direction. Gain real-world experience that deepens your understanding of where your capabilities create impact.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> Semester</span><span><i data-lucide="briefcase"></i> Real-World</span></div>
+          </div>
+        </div>
+        <div class="workshop-card mission-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="trending-up"></i></span><span class="thumb-label">Career</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Career Clarity</span>
+            <h4>Professional Identity Statement</h4>
+            <p>Articulate your professional identity — connecting your strengths, the problems you solve, and the career path where your adaptive skills create the most impact.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> 40 min</span><span><i data-lucide="pen-line"></i> Writing</span></div>
+          </div>
+        </div>
+        <div class="workshop-card passion-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="star"></i></span><span class="thumb-label">Discovery</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Continuous Discovery</span>
+            <h4>Lifelong Learner Plan</h4>
+            <p>Design a personal development roadmap that extends beyond graduation. Stay adaptable and keep growing throughout your career and life.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> 30 min</span><span><i data-lucide="file-text"></i> Planning</span></div>
+          </div>
+        </div>
+        <div class="workshop-card identity-theme">
+          <div class="workshop-thumb"><span class="thumb-icon"><i data-lucide="handshake"></i></span><span class="thumb-label">Integration</span></div>
+          <div class="workshop-body">
+            <span class="workshop-tag">Network Launch</span>
+            <h4>Alumni Connection</h4>
+            <p>Join the founding_up alumni network matched by shared values and interests. Stay connected with peers and mentors who share your values and direction.</p>
+            <div class="workshop-meta"><span><i data-lucide="clock"></i> Ongoing</span><span><i data-lucide="globe"></i> Community</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========== WHY IT WORKS ========== -->
+<section class="why-section" id="why">
+  <div class="section-container">
+    <div class="section-header">
+      <h2>How It Actually Works</h2>
+      <p>Six mechanisms that turn identity exploration into career-ready evidence — each one connected to real people, real data, and real outcomes.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon"><i data-lucide="target"></i></div>
+        <div class="why-label">Internal Evidence</div>
+        <h3>Activities Build Proof</h3>
+        <p>Every real-world action, reflection, and project produces evidence of real capabilities. Not a quiz — a portfolio of demonstrated strengths that grows with each phase.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><i data-lucide="brain"></i></div>
+        <div class="why-label">Mentor-Trained AI</div>
+        <h3>Real Expertise, Built In</h3>
+        <p>Cleo is trained on advice from founding_up's network of business owners, chefs, artists, engineers, and filmmakers — professionals who built identity-driven careers. Their real-world wisdom is embedded in every conversation, recommendation, and career insight.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><i data-lucide="award"></i></div>
+        <div class="why-label">External Evidence</div>
+        <h3>The Market Validates You</h3>
+        <p>Multiple forms of evidence — self-assessed, peer-confirmed, project-verified, educator-confirmed, and employer-verified — are available across every phase. What changes is the student's capacity to interpret and integrate that evidence into a coherent direction.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><i data-lucide="sparkles"></i></div>
+        <div class="why-label">AI Navigation</div>
+        <h3>Cleo Guides, You Decide</h3>
+        <p>An AI companion that adapts to your journey — surfacing relevant activities, connecting skill gaps to opportunities, and reflecting your progress back to you. A navigator, not a prescriber.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><i data-lucide="shield-check"></i></div>
+        <div class="why-label">Trust Architecture</div>
+        <h3>Your Privacy Powers It All</h3>
+        <p>You own your data. Employers see only aggregate insights and the awards you choose to share. That trust is what makes employers invest — and their investment enriches your program.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><i data-lucide="rocket"></i></div>
+        <div class="why-label">Compounding Growth</div>
+        <h3>Small Steps, Big Identity</h3>
+        <p>Explorer to Investigator to Practitioner to Professional. Each phase builds on the last. By the time you graduate, you know your direction, you can act on it, and you can articulate why.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ========== LEADERSHIP ========== -->
+<section class="leadership-section" id="leadership">
+  <div class="section-container">
+    <div class="section-header">
+      <h2>Built by Leaders Who've Scaled It Before</h2>
+      <p>Our founding team brings decades of experience from Amazon, Cisco, and higher education — building the systems that power identity-driven workforce transformation.</p>
+    </div>
+    <div class="leadership-label">Founding Team</div>
+    <div class="leadership-grid">
+      <div class="leader-card">
+        <div class="leader-avatar">DD</div>
+        <h3>Dan Dillard</h3>
+        <div class="leader-title">CEO &amp; Founder</div>
+        <div class="leader-bio">Former CTO and Amazon Global CTO to Cisco — leading founding_up's vision for identity-driven workforce transformation</div>
+      </div>
+      <div class="leader-card">
+        <div class="leader-avatar">MW</div>
+        <h3>Matt Wagner</h3>
+        <div class="leader-title">COO, Founder</div>
+        <div class="leader-bio">Driving operational strategy behind founding_up's identity-first approach to workforce development and student outcomes</div>
+      </div>
+      <div class="leader-card">
+        <div class="leader-avatar">ML</div>
+        <h3>Matthew Liddle</h3>
+        <div class="leader-title">CTO (AI/ML), Founder</div>
+        <div class="leader-bio">Former Sr. Leader at Amazon who built predictive systems scaling to 100M+ users</div>
+      </div>
+      <div class="leader-card">
+        <div class="leader-avatar">GB</div>
+        <h3>Gene Baxter</h3>
+        <div class="leader-title">CTO (Platform), Founder</div>
+        <div class="leader-bio">Former Amazon leader architecting enterprise-grade platform infrastructure</div>
+      </div>
+      <div class="leader-card">
+        <div class="leader-avatar">DR</div>
+        <h3>Danielle Rosenthal</h3>
+        <div class="leader-title">Chief Researcher, Founder</div>
+        <div class="leader-bio">PhD candidate (2026) with 15 years of identity profiling research powering the evidence model</div>
+      </div>
+    </div>
+    <div class="leadership-label" style="margin-top: 16px;">Advisors</div>
+    <div class="advisors-grid">
+      <div class="advisor-card">
+        <h4>Dr. Molly Beth Malcolm</h4>
+        <p>Former Executive VP Chancellor, Austin Community College District</p>
+      </div>
+      <div class="advisor-card">
+        <h4>Dr. Alton Barron</h4>
+        <p>Chairman, Post University</p>
+      </div>
+      <div class="advisor-card">
+        <h4>Dr. Robert C. Robbins</h4>
+        <p>Former University President</p>
+      </div>
+      <div class="advisor-card">
+        <h4>Dr. Richard Box</h4>
+        <p>Chairman Emeritus, Texas A&amp;M Board of Regents</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CTA ========== -->
+<section class="cta-section" id="cta">
+  <div class="section-container">
+    <div class="cta-box">
+      <h2>Ready to See What You're Capable Of?</h2>
+      <p>Join the identity clarity program that helps students recognize the extraordinary capabilities they already have — and build a direction from them.</p>
+      <a href="demo.html" class="btn-primary">Get Started Today &#8594;</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <div class="footer-container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">founding<span>_</span>up</a>
+        <p>An AI-powered identity clarity coaching platform combining research-backed frameworks with real-world labor market intelligence.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Program</h4>
+        <a href="#journey">The Journey</a>
+        <a href="#journey">Identity Focus</a>
+        <a href="#curriculum">Activities</a>
+        <a href="#why">How It Works</a>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <a href="portals/university/">University Portal</a>
+        <a href="portals/student/">Student Portal</a>
+        <a href="portals/employer/">Employer Portal</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="https://www.foundingup.com">About</a>
+        <a href="demo.html">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 founding_up. All rights reserved.</span>
+      <span>Identity Clarity Coaching Platform</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Initialize Lucide icons
+lucide.createIcons();
+
+// Nav scroll effect
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Hamburger toggle
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => {
+  navLinks.classList.toggle('open');
+  // Force scrolled style when menu is open for readability
+  if (navLinks.classList.contains('open')) nav.classList.add('scrolled');
+});
+
+// Grade tabs
+const tabs = document.querySelectorAll('.grade-tab');
+const panels = document.querySelectorAll('.grade-panel');
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('active'));
+    panels.forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-' + tab.dataset.grade).classList.add('active');
+  });
+});
+
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      navLinks.classList.remove('open');
+    }
+  });
+});
+
+// Intersection Observer for fade-in animations
+const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll('.workshop-card, .why-card, .journey-step, .phase-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(el);
+});
+
+/* Logo suffix rotator removed — brand stays as founding_up */
+
+</script>
+<script src="feedback.js"></script>
+
+</body>
+</html>
